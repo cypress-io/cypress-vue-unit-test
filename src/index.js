@@ -45,11 +45,18 @@ const deleteCachedConstructors = component => {
 const getVuePath = options =>
   options.vue || options.vuePath || '../node_modules/vue/dist/vue.js'
 
+const getVuexPath = options =>
+  options.vuex || options.vuexPath
+
 const getPageHTML = options => {
   if (options.html) {
     return options.html
   }
   const vue = getVuePath(options)
+  let vuex = getVuexPath(options)
+  if (vuex) {
+    vuex = `<script src="${vuex}"></script>`
+  }
 
   // note: add "base" tag to force loading static assets
   // from the server, not from the "spec" file URL
@@ -84,6 +91,7 @@ const getPageHTML = options => {
       <body>
         <div id="app"></div>
         <script src="${vue}"></script>
+        ${vuex ? vuex : ''}
       </body>
     </html>
   `
@@ -161,7 +169,10 @@ const mountVue = (component, optionsOrProps = {}) => () => {
         Cypress.vue = new Cmp(props).$mount('#app')
         copyStyles(Cmp)
       } else {
-        Cypress.vue = new Vue(component).$mount('#app')
+        debugger
+        // Cypress.vue = new Vue(component).$mount('#app')
+        const allOptions = Object.assign({}, component, {el: '#app'})
+        Cypress.vue = new Vue(allOptions)
         copyStyles(component)
       }
 

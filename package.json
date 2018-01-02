@@ -88,7 +88,8 @@
     "standard": "10.0.3",
     "vue": "2.5.13",
     "vue-loader": "13.6.1",
-    "vue-template-compiler": "2.5.13"
+    "vue-template-compiler": "2.5.13",
+    "vuex": "3.0.1"
   },
   "standard": {
     "globals": [
