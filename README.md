@@ -33,6 +33,7 @@
 [Bundling](#bundling)
 - [Short Way](#short-way)
 - [Manual](#manual)
+
 [FAQ](#faq)
 
 <a name="install"/>
