@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    Clicked: {{ $store.state.count }} times, count is {{ evenOrOdd }}.
+  <div>
+    Clicked: {{ $store.state.count }} times, count is {{ $store.getters.evenOrOdd }}.
     <button @click="increment">+</button>
     <button @click="decrement">-</button>
     <button @click="incrementIfOdd">Increment if odd</button>
