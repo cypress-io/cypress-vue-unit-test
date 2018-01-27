@@ -19,9 +19,8 @@ describe('Vuex Counter', () => {
   const getCount = () =>
     Cypress.vue.$store.state.count
 
-  const setCount = value => {
-    Cypress.vue.$store.state.count = value
-  }
+  const setCount = value =>
+    Cypress.vue.$set(Cypress.vue.$store.state, 'count', value)
 
   it('starts with zero', () => {
     cy.contains('0 times')
@@ -45,8 +44,8 @@ describe('Vuex Counter', () => {
   })
 
   it('asynchronously increments counter', () => {
-    let count = getCount()
+    const count = getCount()
     cy.contains('button', 'Increment async').click()
-    cy.contains(`${count++} times`)
+    cy.contains(`${count + 1} times`)
   })
 })
