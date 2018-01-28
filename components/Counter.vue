@@ -1,24 +1,31 @@
 <template>
   <div>
-    Clicked: {{ $store.state.count }} times, count is {{ $store.getters.evenOrOdd }}.
+    Clicked: {{ count }} times, count is {{ evenOrOdd }}.<br>
     <button @click="increment">+</button>
     <button @click="decrement">-</button>
     <button @click="incrementIfOdd">Increment if odd</button>
     <button @click="incrementAsync">Increment async</button>
+    <br><br>
+    <span>Set Count: </span>
+    <input type="number" :value="count" @input="set($event.target.value || 0)">
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
-  computed: mapGetters([
-    'evenOrOdd'
-  ]),
-  methods: mapActions([
-    'increment',
-    'decrement',
-    'incrementIfOdd',
-    'incrementAsync'
-  ])
+  computed: {
+    ...mapState(['count']),
+    ...mapGetters(['evenOrOdd'])
+  },
+  methods: {
+    ...mapMutations(['set']),
+    ...mapActions([
+      'increment',
+      'decrement',
+      'incrementIfOdd',
+      'incrementAsync'
+    ])
+  }
 }
 </script>

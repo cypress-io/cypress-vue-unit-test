@@ -14,6 +14,9 @@ const state = {
 // mutations must be synchronous and can be recorded by plugins
 // for debugging purposes.
 const mutations = {
+  set (state, value) {
+    state.count = value
+  },
   increment (state) {
     state.count++
   },
