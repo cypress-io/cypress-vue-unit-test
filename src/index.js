@@ -45,8 +45,7 @@ const deleteCachedConstructors = component => {
 const getVuePath = options =>
   options.vue || options.vuePath || '../node_modules/vue/dist/vue.js'
 
-const getVuexPath = options =>
-  options.vuex || options.vuexPath
+const getVuexPath = options => options.vuex || options.vuexPath
 
 const getPageHTML = options => {
   if (options.html) {
@@ -91,7 +90,7 @@ const getPageHTML = options => {
       <body>
         <div id="app"></div>
         <script src="${vue}"></script>
-        ${vuex ? vuex : ''}
+        ${vuex || ''}
       </body>
     </html>
   `
@@ -136,6 +135,36 @@ const isOptions = object => Object.keys(object).every(isOptionName)
 
 const isConstructor = object => object && object._compiled
 
+const hasStore = ({ store }) => store && store._vm
+
+const forEachValue = (obj, fn) => {
+  Object.keys(obj).forEach(key => fn(obj[key], key))
+}
+
+const resetStoreVM = (Vue, { store }) => {
+  // bind store public getters
+  store.getters = {}
+  const wrappedGetters = store._wrappedGetters
+  const computed = {}
+  forEachValue(wrappedGetters, (fn, key) => {
+    // use computed to leverage its lazy-caching mechanism
+    computed[key] = () => fn(store)
+    Object.defineProperty(store.getters, key, {
+      get: () => store._vm[key],
+      enumerable: true // for local getters
+    })
+  })
+
+  store._watcherVM = new Vue()
+  store._vm = new Vue({
+    data: {
+      $$state: store._vm._data.$$state
+    },
+    computed
+  })
+  return store
+}
+
 // the double function allows mounting a component quickly
 // beforeEach(mountVue(component, options))
 const mountVue = (component, optionsOrProps = {}) => () => {
@@ -159,6 +188,10 @@ const mountVue = (component, optionsOrProps = {}) => () => {
     .window({ log: false })
     .its('Vue')
     .then(Vue => {
+      // refresh inner Vue instance of Vuex store
+      if (hasStore(component)) {
+        component.store = resetStoreVM(Vue, component)
+      }
       installMixins(Vue, options)
       installPlugins(Vue, options)
       registerGlobalComponents(Vue, options)
@@ -169,9 +202,7 @@ const mountVue = (component, optionsOrProps = {}) => () => {
         Cypress.vue = new Cmp(props).$mount('#app')
         copyStyles(Cmp)
       } else {
-        debugger
-        // Cypress.vue = new Vue(component).$mount('#app')
-        const allOptions = Object.assign({}, component, {el: '#app'})
+        const allOptions = Object.assign({}, component, { el: '#app' })
         Cypress.vue = new Vue(allOptions)
         copyStyles(component)
       }
