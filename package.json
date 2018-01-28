@@ -71,6 +71,7 @@
     "generateNotes": "github-post-release"
   },
   "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "6.26.0",
     "ban-sensitive-files": "1.9.2",
     "css-loader": "0.28.7",
     "cypress": "1.4.1",
@@ -86,7 +87,6 @@
     "semantic-action": "1.1.0",
     "simple-commit-message": "3.3.2",
     "standard": "10.0.3",
-    "vue": "2.5.13",
     "vue-loader": "13.6.1",
     "vue-template-compiler": "2.5.13",
     "vuex": "3.0.1"
@@ -100,6 +100,7 @@
   },
   "dependencies": {
     "@cypress/webpack-preprocessor": "1.1.2",
-    "common-tags": "1.6.0"
+    "common-tags": "1.6.0",
+    "vue": "2.5.13"
   }
 }
