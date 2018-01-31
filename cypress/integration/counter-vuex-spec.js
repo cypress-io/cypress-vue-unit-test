@@ -26,12 +26,6 @@ describe('Vuex Counter', () => {
   // initialize a fresh Vue app before each test
   beforeEach(mountVue({template, store}, {extensions}))
 
-  const getCount = () =>
-    Cypress.vue.$store.state.count
-
-  const setCount = value =>
-    Cypress.vue.$set(Cypress.vue.$store.state, 'count', value)
-
   it('starts with zero', () => {
     cy.contains('0 times')
   })
