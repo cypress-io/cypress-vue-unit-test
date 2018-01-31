@@ -75,6 +75,15 @@ const registerGlobalComponents = (Vue, options) => {
   }
 }
 
+const installFilters = (Vue, options) => {
+  const filters = Cypress._.get(options, 'extensions.filters')
+  if (Cypress._.isPlainObject(filters)) {
+    Object.keys(filters).forEach(name => {
+      Vue.filter(name, filters[name])
+    })
+  }
+}
+
 const installPlugins = (Vue, options) => {
   const plugins =
     Cypress._.get(options, 'extensions.use') ||
@@ -130,6 +139,18 @@ const resetStoreVM = (Vue, { store }) => {
     computed
   })
   return store
+
+function setXMLHttpRequest (w) {
+  // by grabbing the XMLHttpRequest from app's iframe
+  // and putting it here - in the test iframe
+  // we suddenly get spying and stubbing 😁
+  window.XMLHttpRequest = w.XMLHttpRequest
+  return w
+}
+
+function setAlert (w) {
+  window.alert = w.alert
+  return w
 }
 
 // the double function allows mounting a component quickly
@@ -188,7 +209,13 @@ const mountVue = (component, optionsOrProps = {}) => () => {
     copyStyles(component)
   }
 
-  return cy.wrap(Cypress.vue)
+  return cy
+    .window({ log: false })
+    .then(setXMLHttpRequest)
+    .then(setAlert)
+    .then(() => {
+      return cy.wrap(Cypress.vue)
+    })
 }
 
 module.exports = mountVue
