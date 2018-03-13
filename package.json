@@ -91,7 +91,7 @@
     "vue-loader": "14.1.1",
     "vuex": "3.0.1",
     "vue-router": "3.0.1",
-    "vue-template-compiler": "2.5.13",
+    "vue-template-compiler": "2.5.16",
     "cypress": "2.1.0"
   },
   "standard": {
