@@ -24,6 +24,9 @@ describe('VueI18n', () => {
     cy.get('select').select('en').should('have.value', 'en')
     cy.contains('message: hello')
 
+    cy.get('select').select('fa').should('have.value', 'fa')
+    cy.contains('message: سلام دنیا')
+
     cy.get('select').select('ja').should('have.value', 'ja')
     cy.contains('message: こんにちは、世界')
 

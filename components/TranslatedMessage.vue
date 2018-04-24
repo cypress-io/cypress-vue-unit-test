@@ -5,6 +5,9 @@
   "en": {
     "hello": "hello world!"
   },
+  "fa": {
+    "hello": "سلام دنیا"
+  },
   "ja": {
     "hello": "こんにちは、世界"
   },
@@ -19,6 +22,7 @@
     <label for="locale">locale</label>
     <select v-model="locale">
       <option>en</option>
+      <option>fa</option>
       <option>ja</option>
       <option>ru</option>
     </select>
