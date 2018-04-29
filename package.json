@@ -80,6 +80,8 @@
   "devDependencies": {
     "axios": "0.18.0",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "babel-preset-es2015": "6.24.1",
     "ban-sensitive-files": "1.9.2",
     "css-loader": "0.28.11",
     "cypress": "2.1.0",
@@ -114,7 +116,8 @@
   },
   "dependencies": {
     "@cypress/webpack-preprocessor": "2.0.1",
+    "@kazupon/vue-i18n-loader": "0.3.0",
     "common-tags": "1.7.2",
-    "@kazupon/vue-i18n-loader": "0.3.0"
+    "vue-autonumeric": "1.2.0"
   }
 }
