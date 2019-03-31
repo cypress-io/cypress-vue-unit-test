@@ -23,7 +23,7 @@ describe('Handling User Input', () => {
   beforeEach(mountVue({ template, data, methods }))
 
   it('reverses text', () => {
-    cy.contains('Hello Vue')
+    cy.contains('Hello Vue.js!')
     cy.get('button').click()
     cy.contains('!sj.euV olleH')
   })
