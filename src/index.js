@@ -23,7 +23,7 @@ const copyStyles = component => {
   if (stylesCache.has(component)) {
     styles = stylesCache.get(component)
   } else {
-    styles = document.querySelectorAll('head style')
+    styles = document.querySelectorAll('head style, head link')
     if (styles.length) {
       console.log('injected %d styles', styles.length)
       stylesCache.set(component, styles)
