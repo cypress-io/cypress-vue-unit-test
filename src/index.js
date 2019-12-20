@@ -2,6 +2,7 @@
 
 const Vue = require('vue/dist/vue')
 const { stripIndent } = require('common-tags')
+const { createWrapper } = require('@vue/test-utils')
 
 // mountVue options
 const defaultOptions = ['html', 'vue', 'base', 'mountId', 'extensions']
@@ -201,7 +202,6 @@ const mountVue = (component, optionsOrProps = {}) => () => {
   installPlugins(Vue, options)
   registerGlobalComponents(Vue, options)
   deleteCachedConstructors(component)
-
   // create root Vue component
   // and make it accessible via Cypress.vue
   if (isConstructor(component)) {
@@ -212,6 +212,7 @@ const mountVue = (component, optionsOrProps = {}) => () => {
     Cypress.vue = new Vue(component).$mount(el)
     copyStyles(component)
   }
+  Cypress.$vue = createWrapper(Cypress.vue)
 
   return cy
     .window({ log: false })

@@ -13,10 +13,11 @@ describe('MessageList', () => {
   })
 
   it('shows messages', () => {
-    Cypress.vue.messages = ['one', 'two']
+    Cypress.$vue.setProps({messages: ['one', 'two']}) // using vue-test-utils
+
     getItems().should('have.length', 2)
     cy.then(() => {
-      Cypress.vue.messages.push('three')
+      Cypress.vue.messages.push('three') // using the prop directly
       getItems().should('have.length', 3)
     })
   })
