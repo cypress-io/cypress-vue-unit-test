@@ -17,8 +17,8 @@ interface Options {
   html?: string;
   base?: string;
   extensions: {
-    components: any[];
-    filters: any[];
+    components: {[name: string]: any};
+    filters: {[name: string]: any};
     use: any[];
     plugins: any[];
     mixin: any[];

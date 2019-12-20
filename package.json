@@ -29,6 +29,7 @@
   },
   "files": [
     "src/*.js",
+    "index.d.ts",
     "preprocessor/*.js",
     "!src/*-spec.js"
   ],
@@ -39,6 +40,7 @@
   ],
   "license": "MIT",
   "main": "src/",
+  "types": "index.d.ts",
   "private": false,
   "publishConfig": {
     "registry": "http://registry.npmjs.org/"
@@ -112,7 +114,6 @@
   "dependencies": {
     "@cypress/webpack-preprocessor": "2.0.1",
     "@kazupon/vue-i18n-loader": "0.3.0",
-    "@vue/test-utils": "1.0.0-beta.30",
     "common-tags": "1.8.0"
   }
 }
