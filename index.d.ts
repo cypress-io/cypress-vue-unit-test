@@ -25,7 +25,7 @@ interface Options {
 }
 
 function mountVue<V extends Vue>(
-  component: Vue,
+  component: Vue.VueConstructor<V>,
   optionsOrProps?: Options
 ): () => void;
 
