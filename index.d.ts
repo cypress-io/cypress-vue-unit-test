@@ -14,17 +14,17 @@ interface Options {
   mountId?: string;
   html?: string;
   base?: string;
-  extensions: {
-    components: any[];
-    filters: any[];
-    use: any[];
-    plugins: any[];
-    mixin: any[];
-    mixins: any[];
+  extensions?: {
+    components?: {[name: string]: any};
+    filters?: {[name: string]: any};
+    use?: any[];
+    plugins?: any[];
+    mixin?: any[];
+    mixins?: any[];
   };
 }
 
-function mountVue<V extends Vue>(
+declare function mountVue<V extends Vue>(
   component: Vue.VueConstructor<V>,
   optionsOrProps?: Options
 ): () => void;
