@@ -14,6 +14,14 @@ const projectName = Cypress.config('projectName')
 const appIframeId = `Your App: '${projectName}'`
 const appIframe = parentDocument.getElementById(appIframeId)
 
+function checkMountModeEnabled() {
+  // @ts-ignore
+  if (Cypress.spec.specType !== 'component') {
+    throw new Error(
+      `In order to use mount or unmount functions please place the spec in component folder`,
+    )
+  }
+}
 // having weak reference to styles prevents garbage collection
 // and "losing" styles when the next test starts
 const stylesCache = new Map()
@@ -156,9 +164,9 @@ function setAlert (w) {
   return w
 }
 
-// the double function allows mounting a component quickly
-// beforeEach(mountVue(component, options))
-const mountVue = (component, optionsOrProps = {}) => () => {
+const mountVue = (component, optionsOrProps = {}) => {
+  checkMountModeEnabled()
+
   let options = {}
   let props = {}
 
@@ -177,18 +185,19 @@ const mountVue = (component, optionsOrProps = {}) => () => {
   }
 
   // insert base app template
-  const doc = appIframe.contentDocument
-  doc.write(getPageHTML(options))
-  doc.close()
+  // const doc = appIframe.contentDocument
+  // doc.write(getPageHTML(options))
+  // doc.close()
 
   // get root Vue mount element
-  const mountId = options.mountId || defaultMountId
-  const el = doc.getElementById(mountId)
+  // const mountId = options.mountId || defaultMountId
+  // const el = doc.getElementById(mountId)
+
 
   // set global Vue instance:
   // 1. convenience for debugging in DevTools
   // 2. some libraries might check for this global
-  appIframe.contentWindow.Vue = Vue
+  // appIframe.contentWindow.Vue = Vue
 
   // refresh inner Vue instance of Vuex store
   if (hasStore(component)) {
@@ -196,30 +205,51 @@ const mountVue = (component, optionsOrProps = {}) => () => {
   }
 
   // setup Vue instance
-  installFilters(Vue, options)
-  installMixins(Vue, options)
-  installPlugins(Vue, options)
-  registerGlobalComponents(Vue, options)
-  deleteCachedConstructors(component)
+  // installFilters(Vue, options)
+  // installMixins(Vue, options)
+  // installPlugins(Vue, options)
+  // registerGlobalComponents(Vue, options)
+  // deleteCachedConstructors(component)
 
-  // create root Vue component
-  // and make it accessible via Cypress.vue
-  if (isConstructor(component)) {
-    const Cmp = Vue.extend(component)
-    Cypress.vue = new Cmp(props).$mount(el)
-    copyStyles(Cmp)
-  } else {
-    Cypress.vue = new Vue(component).$mount(el)
-    copyStyles(component)
-  }
+  // // create root Vue component
+  // // and make it accessible via Cypress.vue
+  // if (isConstructor(component)) {
+  //   const Cmp = Vue.extend(component)
+  //   Cypress.vue = new Cmp(props).$mount(el)
+  //   copyStyles(Cmp)
+  // } else {
+  //   Cypress.vue = new Vue(component).$mount(el)
+  //   copyStyles(component)
+  // }
 
   return cy
     .window({ log: false })
-    .then(setXMLHttpRequest)
-    .then(setAlert)
     .then(() => {
-      return cy.wrap(Cypress.vue)
+      const document = cy.state('document')
+      const el = document.getElementById('cypress-jsdom')
+      const componentNode = document.createElement('div')
+      el.append(componentNode)
+
+      // create root Vue component
+      // and make it accessible via Cypress.vue
+      if (isConstructor(component)) {
+        const Cmp = Vue.extend(component)
+        Cypress.vue = new Cmp(props).$mount(componentNode)
+        // copyStyles(Cmp)
+      } else {
+        Cypress.vue = new Vue(component).$mount(componentNode)
+        // copyStyles(component)
+      }
     })
+    // .then(setXMLHttpRequest)
+    // .then(setAlert)
+    // .then(() => {
+    //   return cy.wrap(Cypress.vue)
+    // })
 }
 
-module.exports = mountVue
+// the double function allows mounting a component quickly
+// beforeEach(mountVue(component, options))
+const mountCallback = (...args) => () => mountVue(...args)
+
+module.exports = {mount: mountVue, mountCallback}

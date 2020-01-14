@@ -1,11 +1,15 @@
 // Cypress webpack bundler adaptor
 // https://github.com/cypress-io/cypress-webpack-preprocessor
 const webpackPreprocessor = require('@cypress/webpack-preprocessor')
+const path = require('path')
 
 // default Cypress webpack options - good for basic projects
 const webpackOptions = {
   resolve: {
-    extensions: ['.js', '.json', '.vue']
+    extensions: ['.js', '.json', '.vue'],
+    alias: {
+      'cypress-vue-unit-test': path.join(__dirname, '..', 'src')
+    }
   },
   module: {
     rules: [
