@@ -1,8 +1,8 @@
 /// <reference types="cypress" />
 'use strict'
 
-import AjaxList from '../../components/AjaxList.vue'
-const mountVue = require('../..')
+import AjaxList from './AjaxList.vue'
+import {mount} from 'cypress-vue-unit-test'
 
 /* eslint-env mocha */
 describe('AjaxList', () => {
@@ -12,7 +12,7 @@ describe('AjaxList', () => {
   // then will mount the component
 
   it('loads list of posts', () => {
-    // now we can observe the XHR to the server
+    mount(AjaxList)
     cy.get('li').should('have.length', 3)
   })
 
@@ -20,7 +20,7 @@ describe('AjaxList', () => {
   it('can inspect real data in XHR', () => {
     cy.server()
     cy.route('/users?_limit=3').as('users')
-    mountVue(AjaxList)()
+    mount(AjaxList)
 
     cy.wait('@users').its('response.body').should('have.length', 3)
   })
@@ -30,7 +30,7 @@ describe('AjaxList', () => {
     cy.server()
     const users = [{id: 1, name: 'foo'}]
     cy.route('GET', '/users?_limit=3', users).as('users')
-    mountVue(AjaxList)()
+    mount(AjaxList)
 
     cy.get('li').should('have.length', 1)
       .first().contains('foo')
@@ -40,7 +40,7 @@ describe('AjaxList', () => {
     cy.server()
     const users = [{id: 1, name: 'foo'}]
     cy.route('GET', '/users?_limit=3', users).as('users')
-    mountVue(AjaxList)()
+    mount(AjaxList)
 
     cy.wait('@users').its('response.body').should('deep.equal', users)
   })
@@ -54,7 +54,7 @@ describe('AjaxList', () => {
       response: users,
       delay: 1000
     }).as('users')
-    mountVue(AjaxList)()
+    mount(AjaxList)
 
     cy.get('li').should('have.length', 0)
     cy.wait('@users')
