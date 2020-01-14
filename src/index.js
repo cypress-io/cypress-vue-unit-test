@@ -60,21 +60,21 @@ const deleteCachedConstructors = component => {
   Cypress._.values(component.components).forEach(deleteConstructor)
 }
 
-const getPageHTML = options => {
-  return (
-    options.html ||
-    stripIndent`
-    <html>
-      <head>
-        ${options.base ? `<base href="${options.base}" />` : ''}
-      </head>
-      <body>
-        <div id="${options.mountId || defaultMountId}"></div>
-      </body>
-    </html>
-  `
-  )
-}
+// const getPageHTML = options => {
+//   return (
+//     options.html ||
+//     stripIndent`
+//     <html>
+//       <head>
+//         ${options.base ? `<base href="${options.base}" />` : ''}
+//       </head>
+//       <body>
+//         <div id="${options.mountId || defaultMountId}"></div>
+//       </body>
+//     </html>
+//   `
+//   )
+// }
 
 const registerGlobalComponents = (Vue, options) => {
   const globalComponents = Cypress._.get(options, 'extensions.components')
@@ -224,11 +224,20 @@ const mountVue = (component, optionsOrProps = {}) => {
 
   return cy
     .window({ log: false })
-    .then(() => {
+    .then((win) => {
+      win.Vue = Vue
+
       const document = cy.state('document')
       const el = document.getElementById('cypress-jsdom')
       const componentNode = document.createElement('div')
       el.append(componentNode)
+
+      // setup Vue instance
+      installFilters(Vue, options)
+      installMixins(Vue, options)
+      installPlugins(Vue, options)
+      // registerGlobalComponents(Vue, options)
+      // deleteCachedConstructors(component)
 
       // create root Vue component
       // and make it accessible via Cypress.vue
