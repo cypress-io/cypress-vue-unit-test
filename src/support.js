@@ -1,4 +1,3 @@
-// @ts-check
 /** Initialize an empty document with root element */
 function renderTestingPlatform() {
   const document = cy.state('document')
