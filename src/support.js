@@ -1,10 +1,11 @@
+/* eslint-env mocha */
 /** Initialize an empty document with root element */
-function renderTestingPlatform() {
+function renderTestingPlatform () {
   const document = cy.state('document')
   const el = document.getElementById('cypress-jsdom')
   if (el) {
     while (el.hasChildNodes()) {
-      el.removeChild(el.lastChild);
+      el.removeChild(el.lastChild)
     }
     return
   }
