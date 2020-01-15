@@ -236,8 +236,8 @@ const mountVue = (component, optionsOrProps = {}) => {
       installFilters(Vue, options)
       installMixins(Vue, options)
       installPlugins(Vue, options)
-      // registerGlobalComponents(Vue, options)
-      // deleteCachedConstructors(component)
+      registerGlobalComponents(Vue, options)
+      deleteCachedConstructors(component)
 
       // create root Vue component
       // and make it accessible via Cypress.vue
