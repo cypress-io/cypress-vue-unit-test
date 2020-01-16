@@ -14,14 +14,6 @@ const defaultOptions = [
   'stylesheets'
 ]
 
-// default mount point element ID for root Vue instance
-// const defaultMountId = 'app'
-
-// const parentDocument = window.parent.document
-// const projectName = Cypress.config('projectName')
-// const appIframeId = `Your App: '${projectName}'`
-// const appIframe = parentDocument.getElementById(appIframeId)
-
 function checkMountModeEnabled () {
   // @ts-ignore
   if (Cypress.spec.specType !== 'component') {
@@ -30,34 +22,6 @@ function checkMountModeEnabled () {
     )
   }
 }
-// having weak reference to styles prevents garbage collection
-// and "losing" styles when the next test starts
-// const stylesCache = new Map()
-
-// const copyStyles = component => {
-//   let styles
-//   if (stylesCache.has(component)) {
-//     styles = stylesCache.get(component)
-//   } else {
-//     styles = document.querySelectorAll('head style')
-//     if (styles.length) {
-//       console.log('injected %d styles', styles.length)
-//       stylesCache.set(component, styles)
-//     } else {
-//       console.log('No styles injected for this component')
-//       styles = null
-//     }
-//   }
-
-//   if (!styles) {
-//     return
-//   }
-
-//   const head = appIframe.contentDocument.querySelector('head')
-//   styles.forEach(style => {
-//     head.appendChild(style)
-//   })
-// }
 
 const deleteConstructor = comp => delete comp._Ctor
 
@@ -139,30 +103,11 @@ const resetStoreVM = (Vue, { store }) => {
   return store
 }
 
-// function setXMLHttpRequest (w) {
-//   // by grabbing the XMLHttpRequest from app's iframe
-//   // and putting it here - in the test iframe
-//   // we suddenly get spying and stubbing 😁
-//   window.XMLHttpRequest = w.XMLHttpRequest
-//   return w
-// }
-
-// function setAlert (w) {
-//   window.alert = w.alert
-//   return w
-// }
-
 const mountVue = (component, optionsOrProps = {}) => {
   checkMountModeEnabled()
 
   const options = Cypress._.pick(optionsOrProps, defaultOptions)
   const props = Cypress._.omit(optionsOrProps, defaultOptions)
-
-  // if (isOptions(optionsOrProps)) {
-  //   options = optionsOrProps
-  // } else {
-  //   props = optionsOrProps
-  // }
 
   // display deprecation warnings
   if (options.vue) {
@@ -171,15 +116,6 @@ const mountVue = (component, optionsOrProps = {}) => {
       'node_modules/vue/dis/vue' is always used.
       Please remove it from your 'mountVue' options.`)
   }
-
-  // insert base app template
-  // const doc = appIframe.contentDocument
-  // doc.write(getPageHTML(options))
-  // doc.close()
-
-  // get root Vue mount element
-  // const mountId = options.mountId || defaultMountId
-  // const el = doc.getElementById(mountId)
 
   // set global Vue instance:
   // 1. convenience for debugging in DevTools
@@ -190,24 +126,6 @@ const mountVue = (component, optionsOrProps = {}) => {
   if (hasStore(component)) {
     component.store = resetStoreVM(Vue, component)
   }
-
-  // setup Vue instance
-  // installFilters(Vue, options)
-  // installMixins(Vue, options)
-  // installPlugins(Vue, options)
-  // registerGlobalComponents(Vue, options)
-  // deleteCachedConstructors(component)
-
-  // // create root Vue component
-  // // and make it accessible via Cypress.vue
-  // if (isConstructor(component)) {
-  //   const Cmp = Vue.extend(component)
-  //   Cypress.vue = new Cmp(props).$mount(el)
-  //   copyStyles(Cmp)
-  // } else {
-  //   Cypress.vue = new Vue(component).$mount(el)
-  //   copyStyles(component)
-  // }
 
   return cy.window({ log: false }).then(win => {
     win.Vue = Vue
@@ -250,17 +168,10 @@ const mountVue = (component, optionsOrProps = {}) => {
     if (isConstructor(component)) {
       const Cmp = Vue.extend(component)
       Cypress.vue = new Cmp(props).$mount(componentNode)
-      // copyStyles(Cmp)
     } else {
       Cypress.vue = new Vue(component).$mount(componentNode)
-      // copyStyles(component)
     }
   })
-  // .then(setXMLHttpRequest)
-  // .then(setAlert)
-  // .then(() => {
-  //   return cy.wrap(Cypress.vue)
-  // })
 }
 
 // the double function allows mounting a component quickly
