@@ -4,7 +4,7 @@ const Vue = require('vue/dist/vue')
 const { stripIndent } = require('common-tags')
 
 // mountVue options
-const defaultOptions = ['html', 'vue', 'base', 'mountId', 'extensions']
+const defaultOptions = ['html', 'vue', 'base', 'mountId', 'extensions', 'style']
 
 // default mount point element ID for root Vue instance
 // const defaultMountId = 'app'
@@ -100,10 +100,6 @@ const installMixins = (Vue, options) => {
   }
 }
 
-const isOptionName = name => defaultOptions.includes(name)
-
-const isOptions = object => Object.keys(object).every(isOptionName)
-
 const isConstructor = object => object && object._compiled
 
 const hasStore = ({ store }) => store && store._vm
@@ -151,14 +147,14 @@ const resetStoreVM = (Vue, { store }) => {
 const mountVue = (component, optionsOrProps = {}) => {
   checkMountModeEnabled()
 
-  let options = {}
-  let props = {}
+  const options = Cypress._.pick(optionsOrProps, defaultOptions)
+  const props = Cypress._.omit(optionsOrProps, defaultOptions)
 
-  if (isOptions(optionsOrProps)) {
-    options = optionsOrProps
-  } else {
-    props = optionsOrProps
-  }
+  // if (isOptions(optionsOrProps)) {
+  //   options = optionsOrProps
+  // } else {
+  //   props = optionsOrProps
+  // }
 
   // display deprecation warnings
   if (options.vue) {
@@ -210,6 +206,13 @@ const mountVue = (component, optionsOrProps = {}) => {
 
     const document = cy.state('document')
     const el = document.getElementById('cypress-jsdom')
+
+    if (options.style) {
+      const style = document.createElement('style')
+      style.appendChild(document.createTextNode(options.style))
+      el.append(style)
+    }
+
     const componentNode = document.createElement('div')
     el.append(componentNode)
 
