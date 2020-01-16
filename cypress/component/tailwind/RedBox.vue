@@ -1,4 +1,5 @@
 <template>
+  <!-- classes come from tailwindcss -->
   <div class="red m-8 p-8 font-sans" data-cy="box">
     <h1>{{ greeting }} RedBox</h1>
   </div>
