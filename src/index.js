@@ -215,6 +215,9 @@ const mountVue = (component, optionsOrProps = {}) => {
     const document = cy.state('document')
     const el = document.getElementById('cypress-jsdom')
 
+    if (typeof options.stylesheets === 'string') {
+      options.stylesheets = [options.stylesheets]
+    }
     if (Array.isArray(options.stylesheets)) {
       console.log('adding stylesheets')
       options.stylesheets.forEach(href => {
