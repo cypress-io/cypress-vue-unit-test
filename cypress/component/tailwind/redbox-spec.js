@@ -1,8 +1,5 @@
-import {mountCallback} from 'cypress-vue-unit-test'
+import {mount, mountCallback} from 'cypress-vue-unit-test'
 import RedBox from './RedBox.vue'
-
-// TODO find a way to inject into head href to additional CSS libraries
-// like <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"></link>
 
 describe('RedBox 1', () => {
   const template = '<red-box :status="true" />';
@@ -11,15 +8,25 @@ describe('RedBox 1', () => {
       components: {
         'red-box': RedBox
       }
-    }
+    },
+    // you can inject additional styles to be downloaded
+    //
+    stylesheets: [
+      // you can use external links
+      // 'https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css'
+      // or local node_modules paths
+      '/node_modules/tailwindcss/dist/tailwind.min.css'
+    ]
   }
 
-  beforeEach(mountCallback({ template }, options));
-  it('displays Hello RedBox', () => {
+  it('displays red Hello RedBox', () => {
+    mount({ template }, options)
+
     cy.contains("Hello RedBox");
-  })
-  it('should be Red', () => {
-    cy.get("[data-cy=box]").should('have.css', 'background-color', 'rgb(255, 0, 0)');
+    cy.get("[data-cy=box]")
+      .should('have.css', 'background-color', 'rgb(255, 0, 0)')
+      // and Tailwindcss style should have been applied
+      .and('have.css', 'margin', '32px')
   })
 })
 

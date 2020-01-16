@@ -4,7 +4,15 @@ const Vue = require('vue/dist/vue')
 const { stripIndent } = require('common-tags')
 
 // mountVue options
-const defaultOptions = ['html', 'vue', 'base', 'mountId', 'extensions', 'style']
+const defaultOptions = [
+  'html',
+  'vue',
+  'base',
+  'mountId',
+  'extensions',
+  'style',
+  'stylesheets'
+]
 
 // default mount point element ID for root Vue instance
 // const defaultMountId = 'app'
@@ -206,6 +214,17 @@ const mountVue = (component, optionsOrProps = {}) => {
 
     const document = cy.state('document')
     const el = document.getElementById('cypress-jsdom')
+
+    if (Array.isArray(options.stylesheets)) {
+      console.log('adding stylesheets')
+      options.stylesheets.forEach(href => {
+        const link = document.createElement('link')
+        link.type = 'text/css'
+        link.rel = 'stylesheet'
+        link.href = href
+        el.append(link)
+      })
+    }
 
     if (options.style) {
       const style = document.createElement('style')
