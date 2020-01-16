@@ -11,11 +11,10 @@ const data = {
 }
 
 describe('Mount component', () => {
-  const options = {
-  }
+  // hmm, there are no more options to pass
 
   const component = { template, data }
-  beforeEach(mountCallback(component, options))
+  beforeEach(mountCallback(component))
 
   it('shows hello', () => {
     cy.contains('Hello Vue!')
