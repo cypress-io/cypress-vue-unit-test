@@ -1,5 +1,3 @@
-// @ts-check
-
 import Message from '../../components/Message.vue'
 const mountVue = require('../..')
 
