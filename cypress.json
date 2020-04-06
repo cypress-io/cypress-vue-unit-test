@@ -3,5 +3,6 @@
   "viewportHeight": 500,
   "video": false,
   "projectId": "134ej7",
-  "testFiles": "**/*spec.js"
+  "testFiles": "**/*spec.js",
+  "experimentalComponentTesting": true
 }
