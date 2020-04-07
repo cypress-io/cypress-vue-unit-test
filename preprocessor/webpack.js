@@ -1,3 +1,5 @@
+const webpack = require('webpack')
+
 // Cypress webpack bundler adaptor
 // https://github.com/cypress-io/cypress-webpack-preprocessor
 const webpackPreprocessor = require('@cypress/webpack-preprocessor')
@@ -5,11 +7,17 @@ const webpackPreprocessor = require('@cypress/webpack-preprocessor')
 const fw = require('find-webpack')
 const webpackOptions = fw.getWebpackOptions()
 
-// TODO: Figure out how to handle dynamic imports
-// Vue CLI's optimization and bundle splitting breaks Cypress
-// but it's necessary for <router-link> lazy loading...
-// and likely other dynamic imports
-delete webpackOptions.optimization
+if (webpackOptions &&
+  webpackOptions.optimization &&
+  webpackOptions.optimization.splitChunks) {
+  delete webpackOptions.optimization.splitChunks
+}
+webpackOptions.plugins = webpackOptions.plugins || []
+webpackOptions.plugins.push(
+  new webpack.optimize.LimitChunkCountPlugin({
+    maxChunks: 1 // no chunks from dynamic imports -- includes the entry file
+  })
+)
 
 /**
  * Basic Cypress Vue Webpack file loader for .vue files
