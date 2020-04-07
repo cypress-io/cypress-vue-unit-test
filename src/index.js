@@ -131,7 +131,15 @@ const mountVue = (component, optionsOrProps = {}) => {
     win.Vue = Vue
 
     const document = cy.state('document')
-    const el = document.getElementById('cypress-jsdom')
+    let el = document.getElementById('cypress-jsdom')
+
+    // If the target div doesn't exist, create it
+    if (!el) {
+      const div = document.createElement('div')
+      div.id = 'cypress-jsdom'
+      document.body.appendChild(div)
+      el = div
+    }
 
     if (typeof options.stylesheets === 'string') {
       options.stylesheets = [options.stylesheets]
