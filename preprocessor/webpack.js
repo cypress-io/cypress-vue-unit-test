@@ -1,32 +1,15 @@
 // Cypress webpack bundler adaptor
 // https://github.com/cypress-io/cypress-webpack-preprocessor
 const webpackPreprocessor = require('@cypress/webpack-preprocessor')
-const path = require('path')
 
-// default Cypress webpack options - good for basic projects
-const webpackOptions = {
-  resolve: {
-    extensions: ['.js', '.json', '.vue'],
-    alias: {
-      'cypress-vue-unit-test': path.join(__dirname, '..', 'src')
-    }
-  },
-  module: {
-    rules: [
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          loaders: {
-            // you need to specify `i18n` loaders key with
-            // `vue-i18n-loader` (https://github.com/kazupon/vue-i18n-loader)
-            i18n: '@kazupon/vue-i18n-loader'
-          }
-        }
-      }
-    ]
-  }
-}
+const fw = require('find-webpack')
+const webpackOptions = fw.getWebpackOptions()
+
+// TODO: Figure out how to handle dynamic imports
+// Vue CLI's optimization and bundle splitting breaks Cypress
+// but it's necessary for <router-link> lazy loading...
+// and likely other dynamic imports
+delete webpackOptions.optimization
 
 /**
  * Basic Cypress Vue Webpack file loader for .vue files
@@ -49,6 +32,7 @@ const onFilePreprocessor = webpackOptions => {
     // load webpack config from the given path
     webpackOptions = require(webpackOptions)
   }
+
   return webpackPreprocessor({
     webpackOptions
   })
