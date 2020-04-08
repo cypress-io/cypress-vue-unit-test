@@ -1,3 +1,5 @@
+const webpack = require('webpack')
+
 // Cypress webpack bundler adaptor
 // https://github.com/cypress-io/cypress-webpack-preprocessor
 const webpackPreprocessor = require('@cypress/webpack-preprocessor')
@@ -5,11 +7,44 @@ const webpackPreprocessor = require('@cypress/webpack-preprocessor')
 const fw = require('find-webpack')
 const webpackOptions = fw.getWebpackOptions()
 
-// TODO: Figure out how to handle dynamic imports
-// Vue CLI's optimization and bundle splitting breaks Cypress
-// but it's necessary for <router-link> lazy loading...
-// and likely other dynamic imports
-delete webpackOptions.optimization
+// Preventing chunks because we don't serve static assets
+function preventChunking (options) {
+  if (options && options.optimization && options.optimization.splitChunks) {
+    delete options.optimization.splitChunks
+  }
+  options.plugins = options.plugins || []
+  options.plugins.push(
+    new webpack.optimize.LimitChunkCountPlugin({
+      maxChunks: 1 // no chunks from dynamic imports -- includes the entry file
+    })
+  )
+  return options
+}
+
+// Base 64 all the things because we don't serve static assets
+function inlineUrlLoadedAssets (options) {
+  const isUrlLoader = use => use.loader.indexOf('url-loader') > -1
+  const mergeUrlLoaderOptions = use => {
+    if (isUrlLoader(use)) {
+      use.options = use.options || {}
+      use.options.limit = Number.MAX_SAFE_INTEGER
+    }
+    return use
+  }
+
+  if (options.module && options.module.rules) {
+    options.module.rules = options.module.rules.map(rule => {
+      if (rule.use) {
+        rule.use = rule.use.map(mergeUrlLoaderOptions)
+      }
+      return rule
+    })
+  }
+  return options
+}
+
+inlineUrlLoadedAssets(webpackOptions)
+preventChunking(webpackOptions)
 
 /**
  * Basic Cypress Vue Webpack file loader for .vue files
