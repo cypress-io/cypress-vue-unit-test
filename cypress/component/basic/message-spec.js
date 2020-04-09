@@ -42,8 +42,8 @@ describe('Message', () => {
       })
 
       it('message has at least length 2', () => {
-        expect(message.validator && message.validator('a')).to.be.not.ok
-        expect(message.validator && message.validator('aa')).to.be.ok
+        expect(message.validator && message.validator('a')).to.be.false
+        expect(message.validator && message.validator('aa')).to.be.true
       })
     })
   })
