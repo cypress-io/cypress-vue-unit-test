@@ -1,9 +1,7 @@
-import Vue, { ComponentOptions } from "vue";
+import Vue from "vue";
 
 declare global {
   namespace Cypress {
-    import Vue from "vue";
-
     interface Cypress {
       vue: Vue;
     }
