@@ -89,7 +89,7 @@
     "semantic-release": "17.0.4",
     "standard": "12.0.1",
     "tailwindcss": "1.1.4",
-    "vue": "2.6.10",
+    "vue": "2.x",
     "vue-i18n": "7.8.1",
     "vue-loader": "14.2.4",
     "vue-router": "3.0.5",
@@ -105,7 +105,7 @@
     ]
   },
   "peerDependencies": {
-    "vue": "2",
+    "vue": "2.x",
     "cypress": "*"
   },
   "dependencies": {
