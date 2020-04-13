@@ -7,12 +7,12 @@ cache:
 notifications:
   email: true
 node_js:
-  - '8'
+  - '12'
 install:
   - npm install
 script:
   - npm run lint
-  - npm run cy:run -- --record
+  - npm run cy:run
 after_success:
   - npm run semantic-release
 branches:
