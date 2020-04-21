@@ -6,7 +6,8 @@ module.exports = {
     resolve: {
       extensions: ['.js', '.json', '.vue'],
       alias: {
-        'cypress-vue-unit-test': path.join(__dirname, 'src')
+        'cypress-vue-unit-test': path.join(__dirname, 'src'),
+        'vue$': path.join(__dirname, 'vue/dist/vue.esm.js') // 'vue/dist/vue.common.js' for webpack 1
       }
     },
     module: {

@@ -21,29 +21,6 @@ function preventChunking (options) {
   return options
 }
 
-// Base 64 all the things because we don't serve static assets
-function inlineUrlLoadedAssets (options) {
-  const isUrlLoader = use => use.loader.indexOf('url-loader') > -1
-  const mergeUrlLoaderOptions = use => {
-    if (isUrlLoader(use)) {
-      use.options = use.options || {}
-      use.options.limit = Number.MAX_SAFE_INTEGER
-    }
-    return use
-  }
-
-  if (options.module && options.module.rules) {
-    options.module.rules = options.module.rules.map(rule => {
-      if (rule.use) {
-        rule.use = rule.use.map(mergeUrlLoaderOptions)
-      }
-      return rule
-    })
-  }
-  return options
-}
-
-inlineUrlLoadedAssets(webpackOptions)
 preventChunking(webpackOptions)
 
 /**
@@ -69,7 +46,7 @@ const onFilePreprocessor = webpackOptions => {
   }
 
   return webpackPreprocessor({
-    webpackOptions
+    webpackOptions,
   })
 }
 
