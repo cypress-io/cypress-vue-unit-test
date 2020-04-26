@@ -43,8 +43,14 @@ function inlineUrlLoadedAssets (options) {
   return options
 }
 
+function compileTemplate(options = {}) {
+  options.resolve = options.resolve || {}
+  options.resolve.alias = options.resolve.alias || {}
+  options.resolve.alias['vue$'] = options.resolve.alias['vue$'] || 'vue/dist/vue.esm.js'
+}
 inlineUrlLoadedAssets(webpackOptions)
 preventChunking(webpackOptions)
+compileTemplate(webpackOptions)
 
 /**
  * Basic Cypress Vue Webpack file loader for .vue files
