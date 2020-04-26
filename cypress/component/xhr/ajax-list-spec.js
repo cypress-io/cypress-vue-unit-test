@@ -2,7 +2,7 @@
 'use strict'
 
 import AjaxList from './AjaxList.vue'
-import {mount} from 'cypress-vue-unit-test'
+import { mount } from 'cypress-vue-unit-test'
 
 /* eslint-env mocha */
 describe('AjaxList', () => {
@@ -15,7 +15,6 @@ describe('AjaxList', () => {
     mount(AjaxList)
     cy.get('li').should('have.length', 3)
   })
-
 
   it('can inspect real data in XHR', () => {
     cy.server()
