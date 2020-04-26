@@ -8,7 +8,7 @@ const fw = require('find-webpack')
 const webpackOptions = fw.getWebpackOptions()
 
 // Preventing chunks because we don't serve static assets
-function preventChunking (options) {
+function preventChunking (options = {}) {
   if (options && options.optimization && options.optimization.splitChunks) {
     delete options.optimization.splitChunks
   }
@@ -22,7 +22,7 @@ function preventChunking (options) {
 }
 
 // Base 64 all the things because we don't serve static assets
-function inlineUrlLoadedAssets (options) {
+function inlineUrlLoadedAssets (options = {}) {
   const isUrlLoader = use => use.loader.indexOf('url-loader') > -1
   const mergeUrlLoaderOptions = use => {
     if (isUrlLoader(use)) {
