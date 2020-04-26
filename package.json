@@ -89,7 +89,7 @@
     "mocha": "7.1.1",
     "pre-git": "3.17.1",
     "prettier-standard": "8.0.1",
-    "semantic-release": "15.14.0",
+    "semantic-release": "17.0.7",
     "simple-commit-message": "4.0.13",
     "standard": "12.0.1",
     "vue": "2.6.10",
