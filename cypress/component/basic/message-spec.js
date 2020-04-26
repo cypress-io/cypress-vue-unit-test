@@ -64,7 +64,7 @@ describe('Message', () => {
         const stub = cy.spy()
         Cypress.vue.$on('message-clicked', stub)
         cy.get('.message').click().then(() => {
-          expect(stub).to.be.calledOnce
+          expect(stub).to.be.called.once
           expect(stub).to.be.calledWith('Cat')
         })
       })

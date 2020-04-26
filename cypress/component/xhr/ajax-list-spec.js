@@ -24,6 +24,7 @@ describe('AjaxList', () => {
     cy.wait('@users').its('response.body').should('have.length', 3)
   })
 
+
   it('can display mock XHR response', () => {
     cy.server()
     const users = [{id: 1, name: 'foo'}]
