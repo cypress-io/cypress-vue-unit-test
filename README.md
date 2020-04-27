@@ -597,7 +597,7 @@ The mount function automatically wraps XMLHttpRequest giving you an ability to i
 ```js
 // component use axios to get list of users
 created() {
-  axios.get(`http://jsonplaceholder.typicode.com/users?_limit=3`)
+  axios.get(`https://jsonplaceholder.cypress.io/users?_limit=3`)
   .then(response => {
     // JSON responses are automatically parsed.
     this.users = response.data
