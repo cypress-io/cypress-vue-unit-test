@@ -4,15 +4,7 @@ const Vue = require('vue').default
 const { stripIndent } = require('common-tags')
 
 // mountVue options
-const defaultOptions = [
-  'html',
-  'vue',
-  'base',
-  'mountId',
-  'extensions',
-  'style',
-  'stylesheets'
-]
+const defaultOptions = ['vue', 'extensions', 'style', 'stylesheets']
 
 function checkMountModeEnabled () {
   // @ts-ignore
