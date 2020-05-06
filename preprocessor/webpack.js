@@ -6,7 +6,7 @@ const webpackPreprocessor = require('@cypress/webpack-preprocessor')
 
 const fw = require('find-webpack')
 const webpackOptions = fw.getWebpackOptions()
-
+console.log(webpackOptions)
 // Preventing chunks because we don't serve static assets
 function preventChunking (options) {
   if (options && options.optimization && options.optimization.splitChunks) {
@@ -46,7 +46,7 @@ const onFilePreprocessor = webpackOptions => {
   }
 
   return webpackPreprocessor({
-    webpackOptions,
+    webpackOptions
   })
 }
 

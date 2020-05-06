@@ -1,7 +1,6 @@
 /// <reference types="cypress" />
-
-const Vue = require('vue/dist/vue.esm.js').default
-const { stripIndent } = require('common-tags')
+import { createApp } from 'vue'
+import { stripIndent } from 'common-tags'
 
 // mountVue options
 const defaultOptions = [
@@ -128,7 +127,7 @@ const mountVue = (component, optionsOrProps = {}) => {
   }
 
   return cy.window({ log: false }).then(win => {
-    win.Vue = Vue
+    // win.Vue = Vue
 
     const document = cy.state('document')
     let el = document.getElementById('cypress-jsdom')
@@ -165,25 +164,25 @@ const mountVue = (component, optionsOrProps = {}) => {
     el.append(componentNode)
 
     // setup Vue instance
-    installFilters(Vue, options)
-    installMixins(Vue, options)
-    installPlugins(Vue, options)
-    registerGlobalComponents(Vue, options)
-    deleteCachedConstructors(component)
+    // installFilters(Vue, options)
+    // installMixins(Vue, options)
+    // installPlugins(Vue, options)
+    // registerGlobalComponents(Vue, options)
+    // deleteCachedConstructors(component)
 
     // create root Vue component
     // and make it accessible via Cypress.vue
-    if (isConstructor(component)) {
-      const Cmp = Vue.extend(component)
-      Cypress.vue = new Cmp(props).$mount(componentNode)
-    } else {
-      Cypress.vue = new Vue(component).$mount(componentNode)
-    }
+    // if (isConstructor(component)) {
+    //   const Cmp = Vue.extend(component)
+    //   Cypress.vue = new Cmp(props).$mount(componentNode)
+    // } else {
+    Cypress.vue = createApp(component).mount(componentNode)
+    // }
   })
 }
 
 // the double function allows mounting a component quickly
 // beforeEach(mountVue(component, options))
-const mountCallback = (...args) => () => mountVue(...args)
+export const mountCallback = (...args) => () => mountVue(...args)
 
-module.exports = { mount: mountVue, mountCallback }
+export const mount = mountVue
