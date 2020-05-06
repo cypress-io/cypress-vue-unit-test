@@ -1,0 +1,64 @@
+{
+  "_from": "@vue/shared@3.0.0-beta.4",
+  "_id": "@vue/shared@3.0.0-beta.4",
+  "_inBundle": false,
+  "_integrity": "sha512-itHxDgTzurGLiwkWc9IMPNhac0hv4mkoszGsRQclCKYmJ+Fao913i7pN3Smnl8xUYtv9Bo7EWyxmT60irN0+gg==",
+  "_location": "/@vue/shared",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "@vue/shared@3.0.0-beta.4",
+    "name": "@vue/shared",
+    "escapedName": "@vue%2fshared",
+    "scope": "@vue",
+    "rawSpec": "3.0.0-beta.4",
+    "saveSpec": null,
+    "fetchSpec": "3.0.0-beta.4"
+  },
+  "_requiredBy": [
+    "/@vue/compiler-core",
+    "/@vue/compiler-dom",
+    "/@vue/reactivity",
+    "/@vue/runtime-core",
+    "/@vue/runtime-dom",
+    "/vue"
+  ],
+  "_resolved": "https://registry.npmjs.org/@vue/shared/-/shared-3.0.0-beta.4.tgz",
+  "_shasum": "2c1f18896d598549a9241641b406f0886a710494",
+  "_spec": "@vue/shared@3.0.0-beta.4",
+  "_where": "/Users/bencodezen/Projects/cypress-vue-unit-test/node_modules/vue",
+  "author": {
+    "name": "Evan You"
+  },
+  "bugs": {
+    "url": "https://github.com/vuejs/vue-next/issues"
+  },
+  "buildOptions": {
+    "formats": [
+      "esm-bundler",
+      "cjs"
+    ]
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "internal utils shared across @vue packages",
+  "files": [
+    "index.js",
+    "dist"
+  ],
+  "homepage": "https://github.com/vuejs/vue-next/tree/master/packages/shared#readme",
+  "keywords": [
+    "vue"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "module": "dist/shared.esm-bundler.js",
+  "name": "@vue/shared",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vuejs/vue-next.git"
+  },
+  "types": "dist/shared.d.ts",
+  "version": "3.0.0-beta.4"
+}

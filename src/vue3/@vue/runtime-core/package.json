@@ -1,0 +1,65 @@
+{
+  "_from": "@vue/runtime-core@3.0.0-beta.4",
+  "_id": "@vue/runtime-core@3.0.0-beta.4",
+  "_inBundle": false,
+  "_integrity": "sha512-g/WYLmsWrEkgHDIpW3Zt7e1+duxcoqi5uh4isNlpHPhhwBFfTi+ghAqf3TO7G1VOhZY6qMqgMDM/g155ibkeHw==",
+  "_location": "/@vue/runtime-core",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "@vue/runtime-core@3.0.0-beta.4",
+    "name": "@vue/runtime-core",
+    "escapedName": "@vue%2fruntime-core",
+    "scope": "@vue",
+    "rawSpec": "3.0.0-beta.4",
+    "saveSpec": null,
+    "fetchSpec": "3.0.0-beta.4"
+  },
+  "_requiredBy": [
+    "/@vue/runtime-dom"
+  ],
+  "_resolved": "https://registry.npmjs.org/@vue/runtime-core/-/runtime-core-3.0.0-beta.4.tgz",
+  "_shasum": "13b043b6704666d902344a7a6ce0c2770c7308d9",
+  "_spec": "@vue/runtime-core@3.0.0-beta.4",
+  "_where": "/Users/bencodezen/Projects/cypress-vue-unit-test/node_modules/@vue/runtime-dom",
+  "author": {
+    "name": "Evan You"
+  },
+  "bugs": {
+    "url": "https://github.com/vuejs/vue-next/issues"
+  },
+  "buildOptions": {
+    "name": "VueRuntimeCore",
+    "formats": [
+      "esm-bundler",
+      "cjs"
+    ]
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "@vue/reactivity": "3.0.0-beta.4",
+    "@vue/shared": "3.0.0-beta.4"
+  },
+  "deprecated": false,
+  "description": "@vue/runtime-core",
+  "files": [
+    "index.js",
+    "dist"
+  ],
+  "homepage": "https://github.com/vuejs/vue-next/tree/master/packages/runtime-core#readme",
+  "keywords": [
+    "vue"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "module": "dist/runtime-core.esm-bundler.js",
+  "name": "@vue/runtime-core",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vuejs/vue-next.git"
+  },
+  "sideEffects": false,
+  "types": "dist/runtime-core.d.ts",
+  "version": "3.0.0-beta.4"
+}
