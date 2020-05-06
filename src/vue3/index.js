@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { createApp } from './vue'
+import { createApp } from 'vue'
 import { stripIndent } from 'common-tags'
 
 // mountVue options
