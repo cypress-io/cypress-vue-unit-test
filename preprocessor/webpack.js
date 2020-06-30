@@ -1,9 +1,11 @@
 const webpack = require('webpack')
+const util = require('util')
 
 // Cypress webpack bundler adaptor
 // https://github.com/cypress-io/cypress-webpack-preprocessor
 const webpackPreprocessor = require('@cypress/webpack-preprocessor')
 const debug = require('debug')('cypress-vue-unit-test')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 const fw = require('find-webpack')
 const webpackOptions = fw.getWebpackOptions()
@@ -54,9 +56,12 @@ function compileTemplate (options = {}) {
  * Warning: modifies the input object
  */
 function insertBabelLoader(options) {
+  options.devtool = '#eval-source-map'
+
   options.module.rules.push({
     test: /\.js$/,
     loader: 'babel-loader',
+    exclude: /node_modules/,
     options: {
       plugins: [
         // this plugin allows ES6 imports mocking
@@ -72,6 +77,11 @@ function insertBabelLoader(options) {
       ]
     },
   })
+
+  options.plugins = options.plugins || []
+  options.plugins.push(
+    new VueLoaderPlugin()
+  )
 }
 
 inlineUrlLoadedAssets(webpackOptions)
@@ -79,7 +89,10 @@ preventChunking(webpackOptions)
 compileTemplate(webpackOptions)
 insertBabelLoader(webpackOptions)
 
-debug('final webpack %o', webpackOptions)
+if (debug.enabled) {
+  console.error('final webpack')
+  console.error(util.inspect(webpackOptions, false, 10, true))
+}
 
 /**
  * Basic Cypress Vue Webpack file loader for .vue files
