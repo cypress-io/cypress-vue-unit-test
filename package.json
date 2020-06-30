@@ -73,9 +73,9 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "7.8.4",
-    "@babel/core": "7.9.0",
-    "@babel/preset-env": "7.9.5",
+    "@babel/cli": "7.10.3",
+    "@babel/core": "7.10.3",
+    "@babel/preset-env": "7.10.3",
     "axios": "0.19.2",
     "ban-sensitive-files": "1.9.7",
     "css-loader": "3.4.2",
