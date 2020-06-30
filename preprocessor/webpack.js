@@ -3,6 +3,7 @@ const webpack = require('webpack')
 // Cypress webpack bundler adaptor
 // https://github.com/cypress-io/cypress-webpack-preprocessor
 const webpackPreprocessor = require('@cypress/webpack-preprocessor')
+const debug = require('debug')('cypress-vue-unit-test')
 
 const fw = require('find-webpack')
 const webpackOptions = fw.getWebpackOptions()
@@ -51,6 +52,8 @@ function compileTemplate (options = {}) {
 inlineUrlLoadedAssets(webpackOptions)
 preventChunking(webpackOptions)
 compileTemplate(webpackOptions)
+
+debug('final webpack %o', webpackOptions)
 
 /**
  * Basic Cypress Vue Webpack file loader for .vue files
