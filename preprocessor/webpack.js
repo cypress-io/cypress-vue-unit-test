@@ -49,24 +49,31 @@ function compileTemplate (options = {}) {
   options.resolve.alias = options.resolve.alias || {}
   options.resolve.alias['vue$'] = 'vue/dist/vue.esm.js'
 }
+
+/**
+ * Warning: modifies the input object
+ */
+function insertBabelLoader(options) {
+  options.module.rules.push({
+    test: /\.js$/,
+    loader: 'babel-loader',
+    options: {
+      plugins: [
+        [
+          '@babel/plugin-transform-modules-commonjs',
+          {
+            loose: true,
+          }
+        ]
+      ]
+    },
+  })
+}
+
 inlineUrlLoadedAssets(webpackOptions)
 preventChunking(webpackOptions)
 compileTemplate(webpackOptions)
-
-webpackOptions.module.rules.push({
-  test: /\.js$/,
-  loader: 'babel-loader',
-  options: {
-    plugins: [
-      [
-        '@babel/plugin-transform-modules-commonjs',
-        {
-          loose: true,
-        }
-      ]
-    ]
-  },
-})
+insertBabelLoader(webpackOptions)
 
 debug('final webpack %o', webpackOptions)
 
