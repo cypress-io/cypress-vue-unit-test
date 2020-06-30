@@ -59,12 +59,16 @@ function insertBabelLoader(options) {
     loader: 'babel-loader',
     options: {
       plugins: [
+        // this plugin allows ES6 imports mocking
         [
           '@babel/plugin-transform-modules-commonjs',
           {
             loose: true,
           }
-        ]
+        ],
+        // this plugin instruments the loaded code
+        // which allows us to collect code coverage
+        'babel-plugin-istanbul'
       ]
     },
   })
