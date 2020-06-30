@@ -53,6 +53,21 @@ inlineUrlLoadedAssets(webpackOptions)
 preventChunking(webpackOptions)
 compileTemplate(webpackOptions)
 
+webpackOptions.module.rules.push({
+  test: /\.js$/,
+  loader: 'babel-loader',
+  options: {
+    plugins: [
+      [
+        '@babel/plugin-transform-modules-commonjs',
+        {
+          loose: true,
+        }
+      ]
+    ]
+  },
+})
+
 debug('final webpack %o', webpackOptions)
 
 /**
