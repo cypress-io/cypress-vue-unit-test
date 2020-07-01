@@ -73,7 +73,14 @@ function insertBabelLoader(options) {
         ],
         // this plugin instruments the loaded code
         // which allows us to collect code coverage
-        'babel-plugin-istanbul'
+        [
+          'babel-plugin-istanbul',
+          {
+            // specify some options for NYC instrumentation here
+            // like tell it to instrument both JavaScript and Vue files
+            extension: [ '.js', '.vue' ]
+          }
+        ]
       ]
     },
   })
