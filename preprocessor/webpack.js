@@ -52,11 +52,16 @@ function compileTemplate (options = {}) {
 
 /**
  * Warning: modifies the input object
+ * @param {Cypress.ConfigOptions} config
  */
-function insertBabelLoader(options) {
-  options.devtool = '#eval-source-map'
+function insertBabelLoader(config, options) {
+  const skipCodeCoverage = config && config.env && config.env.coverage === false
 
-  options.module.rules.push({
+  if (!options.devtool) {
+    options.devtool = '#eval-source-map'
+  }
+
+  const babelRule = {
     test: /\.js$/,
     loader: 'babel-loader',
     exclude: /node_modules/,
@@ -69,20 +74,28 @@ function insertBabelLoader(options) {
             loose: true,
           }
         ],
-        // this plugin instruments the loaded code
-        // which allows us to collect code coverage
-        [
-          'babel-plugin-istanbul',
-          {
-            // specify some options for NYC instrumentation here
-            // like tell it to instrument both JavaScript and Vue files
-            extension: [ '.js', '.vue' ]
-          }
-        ]
       ]
     },
-  })
+  }
 
+  if (skipCodeCoverage) {
+    debug('not adding code instrument plugin')
+  } else {
+    debug('adding code coverage plugin')
+    // this plugin instruments the loaded code
+    // which allows us to collect code coverage
+    const instrumentPlugin = [
+      'babel-plugin-istanbul',
+      {
+        // specify some options for NYC instrumentation here
+        // like tell it to instrument both JavaScript and Vue files
+        extension: [ '.js', '.vue' ]
+      }
+    ]
+    babelRule.options.plugins.push(instrumentPlugin)
+  }
+
+  options.module.rules.push(babelRule)
   options.plugins = options.plugins || []
   options.plugins.push(
     new VueLoaderPlugin()
@@ -90,7 +103,7 @@ function insertBabelLoader(options) {
 }
 
 /**
- * Basic Cypress Vue Webpack file loader for .vue files
+ * Basic Cypress Vue Webpack file loader for .vue files.
  */
 const onFileDefaultPreprocessor = (config) => {
   const webpackOptions = fw.getWebpackOptions()
@@ -98,7 +111,7 @@ const onFileDefaultPreprocessor = (config) => {
   inlineUrlLoadedAssets(webpackOptions)
   preventChunking(webpackOptions)
   compileTemplate(webpackOptions)
-  insertBabelLoader(webpackOptions)
+  insertBabelLoader(config, webpackOptions)
 
   if (debug.enabled) {
     console.error('final webpack')

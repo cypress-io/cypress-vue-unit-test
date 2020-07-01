@@ -10,7 +10,7 @@
 
 > A little helper to unit test Vue components in the open source [Cypress.io](https://www.cypress.io/) E2E test runner **v4.5.0+**
 
-**Jump to:** [Comparison](#comparison), Examples: [basic](#basic-examples), [advanced](#advanced-examples)
+**Jump to:** [Comparison](#comparison), Examples: [basic](#basic-examples), [advanced](#advanced-examples), [Code coverage](#code-coverage)
 
 ## TLDR
 
@@ -705,6 +705,18 @@ describe('Hello.vue', () => {
     cy.contains('Hello World!')
   })
 })
+```
+
+## Code coverage
+
+This plugin uses `babel-plugin-istanbul` to automatically instrument `.js` and `.vue` files and generates the code coverage report using dependency [cypress-io/code-coverage](https://github.com/cypress-io/code-coverage) (included). If you want to disable code coverage instrumentation and reporting, use `--env coverage=false` or `CYPRESS_coverage=false` or set in your `cypress.json` file
+
+```json
+{
+  "env": {
+    "coverage": false
+  }
+}
 ```
 
 <a name="#development"/>
