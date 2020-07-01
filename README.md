@@ -763,6 +763,25 @@ to start and proxy Webpack dev server. See [issue #4](https://github.com/bahmuto
 - [Learn TDD in Vue](https://learntdd.in/vue)
 - [cypress-vue-unit-test vs vue-test-utils](https://codingitwrong.com/2018/03/04/comparing-vue-component-testing-tools.html)
 
+## Migration guide
+
+### From v2 to v3
+
+- update `cypress/plugins/index.js` file to pass the `on, config` arguments when creating the default preprocessor. See [change](https://github.com/bahmutov/cypress-vue-unit-test/pull/331/files#diff-4bcea4966f5e62ded90298c2b0907445), in general the new way is:
+
+```js
+const { onFileDefaultPreprocessor } = require('cypress-vue-unit-test/preprocessor/webpack')
+
+module.exports = (on, config) => {
+  require('@cypress/code-coverage/task')(on, config)
+  on('file:preprocessor', onFileDefaultPreprocessor(config))
+
+  // IMPORTANT to return the config object
+  // with the any changed environment variables
+  return config
+}
+```
+
 <a name="#other"/>
 
 ## Test adapters for other frameworks
