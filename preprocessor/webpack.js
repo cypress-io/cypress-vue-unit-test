@@ -6,9 +6,7 @@ const util = require('util')
 const webpackPreprocessor = require('@cypress/webpack-preprocessor')
 const debug = require('debug')('cypress-vue-unit-test')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-
 const fw = require('find-webpack')
-const webpackOptions = fw.getWebpackOptions()
 
 // Preventing chunks because we don't serve static assets
 function preventChunking (options = {}) {
@@ -91,20 +89,24 @@ function insertBabelLoader(options) {
   )
 }
 
-inlineUrlLoadedAssets(webpackOptions)
-preventChunking(webpackOptions)
-compileTemplate(webpackOptions)
-insertBabelLoader(webpackOptions)
-
-if (debug.enabled) {
-  console.error('final webpack')
-  console.error(util.inspect(webpackOptions, false, 10, true))
-}
-
 /**
  * Basic Cypress Vue Webpack file loader for .vue files
  */
-const onFileDefaultPreprocessor = webpackPreprocessor({ webpackOptions })
+const onFileDefaultPreprocessor = (config) => {
+  const webpackOptions = fw.getWebpackOptions()
+
+  inlineUrlLoadedAssets(webpackOptions)
+  preventChunking(webpackOptions)
+  compileTemplate(webpackOptions)
+  insertBabelLoader(webpackOptions)
+
+  if (debug.enabled) {
+    console.error('final webpack')
+    console.error(util.inspect(webpackOptions, false, 10, true))
+  }
+
+  return webpackPreprocessor({ webpackOptions })
+}
 
 /**
  * Custom Vue loader from the client projects that already have `webpack.config.js`
