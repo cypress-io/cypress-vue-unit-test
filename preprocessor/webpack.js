@@ -24,7 +24,7 @@ function preventChunking (options = {}) {
 
 // Base 64 all the things because we don't serve static assets
 function inlineUrlLoadedAssets (options = {}) {
-  const isUrlLoader = use => use.loader.indexOf('url-loader') > -1
+  const isUrlLoader = use => use && use.loader && use.loader.indexOf('url-loader') > -1
   const mergeUrlLoaderOptions = use => {
     if (isUrlLoader(use)) {
       use.options = use.options || {}
@@ -35,7 +35,7 @@ function inlineUrlLoadedAssets (options = {}) {
 
   if (options.module && options.module.rules) {
     options.module.rules = options.module.rules.map(rule => {
-      if (rule.use) {
+      if (Array.isArray(rule.use)) {
         rule.use = rule.use.map(mergeUrlLoaderOptions)
       }
       return rule
@@ -53,6 +53,7 @@ function compileTemplate (options = {}) {
 /**
  * Warning: modifies the input object
  * @param {Cypress.ConfigOptions} config
+ * @param {import('webpack/lib/Compiler').WebpackOptions} options
  */
 function insertBabelLoader(config, options) {
   const skipCodeCoverage = config && config.env && config.env.coverage === false
@@ -97,21 +98,34 @@ function insertBabelLoader(config, options) {
 
   options.module.rules.push(babelRule)
   options.plugins = options.plugins || []
-  options.plugins.push(
-    new VueLoaderPlugin()
-  )
+
+  const pluginFound = options.plugins.some(plugin => plugin.constructor === VueLoaderPlugin)
+  if (!pluginFound) {
+    debug('inserting VueLoaderPlugin')
+    options.plugins.push(
+      new VueLoaderPlugin()
+    )
+  } else {
+    debug('found plugin VueLoaderPlugin already')
+  }
 }
 
 /**
  * Basic Cypress Vue Webpack file loader for .vue files.
  */
 const onFileDefaultPreprocessor = (config) => {
-  const webpackOptions = fw.getWebpackOptions()
+  let webpackOptions = fw.getWebpackOptions()
+  if (!webpackOptions) {
+    debug('Could not find webpack options, starting with default')
+    webpackOptions = {}
+  }
+  webpackOptions.mode = 'development'
 
   inlineUrlLoadedAssets(webpackOptions)
   preventChunking(webpackOptions)
   compileTemplate(webpackOptions)
   insertBabelLoader(config, webpackOptions)
+
 
   if (debug.enabled) {
     console.error('final webpack')
