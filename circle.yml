@@ -43,6 +43,7 @@ workflows:
 
       - cypress/run:
           name: Example CLI
+          executor: cypress/base-12
           requires:
             - Install
           install-command: npm install
