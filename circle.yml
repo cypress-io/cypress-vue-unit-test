@@ -57,7 +57,7 @@ workflows:
             # Hmm, should it be --only=production?
             npm install ../..
             echo "🦶🏻 run component tests"
-            npx cypress run
+            npx cypress run --spec 'tests/components/**/*.js'
           store_artifacts: true
 
       # this job attaches the workspace left by the install job
