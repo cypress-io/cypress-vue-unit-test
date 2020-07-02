@@ -41,6 +41,21 @@ workflows:
             echo "Test files for this machine are $TESTFILES"
             npx cypress run --spec $TESTFILES
 
+      - cypress/run:
+          name: Example CLI
+          requires:
+            - Install
+          install-command: npm install
+          verify-command: echo 'Already verified'
+          no-workspace: true
+          working_directory: examples/cli
+          command: |
+            # add component tests
+            npx --package @vue/cli vue add cypress-experimental
+            # now install the current cypress-vue-unit-test
+            npm install ../..
+          store_artifacts: false
+
       # this job attaches the workspace left by the install job
       # so it is ready to run Cypress tests
       # only we will run semantic release script instead
@@ -56,6 +71,7 @@ workflows:
           requires:
             - Install
             - Test
+            - Example CLI
           install-command: echo 'Already installed'
           verify-command: echo 'Already verified'
           no-workspace: true

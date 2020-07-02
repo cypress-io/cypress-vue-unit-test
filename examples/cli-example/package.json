@@ -12,7 +12,6 @@
     "vue": "^2.6.11"
   },
   "devDependencies": {
-    "cypress-vue-unit-test": "file:../..",
     "@vue/cli-plugin-babel": "~4.4.0",
     "@vue/cli-plugin-eslint": "~4.4.0",
     "@vue/cli-service": "~4.4.0",
