@@ -51,9 +51,9 @@ workflows:
           no-workspace: true
           working_directory: examples/cli
           command: |
-            # add component tests
+            echo "Scaffolding component tests"
             npx --package @vue/cli vue add cypress-experimental
-            # now install the current cypress-vue-unit-test
+            echo "install the current cypress-vue-unit-test"
             npm install ../..
           store_artifacts: false
 
