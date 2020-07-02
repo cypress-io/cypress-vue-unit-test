@@ -8,7 +8,9 @@
     "node": ">=8"
   },
   "files": [
-    "dist/**/*"
+    "dist/**/*",
+    "preprocessor",
+    "plugins"
   ],
   "homepage": "https://github.com/bahmutov/cypress-vue-unit-test#readme",
   "keywords": [
