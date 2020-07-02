@@ -11,6 +11,7 @@ workflows:
       - cypress/install:
           name: Install
           executor: cypress/base-12
+          # creates files in "dist" folder
           build: npm run build
           post-steps:
             - run:
