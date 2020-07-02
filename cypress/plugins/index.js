@@ -1,7 +1,6 @@
+/// <reference types="cypress" />
 const preprocessor = require('../../plugins/webpack')
 module.exports = (on, config) => {
   preprocessor(on, config)
-  // IMPORTANT to return the config object
-  // with the any changed environment variables
   return config
 }
