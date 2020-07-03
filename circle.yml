@@ -52,12 +52,17 @@ workflows:
           working_directory: examples/cli
           command: |
             echo "🦶🏻 Scaffolding component tests"
+            # scaffolds Babel + Webpack combo
             npx --package @vue/cli vue add cypress-experimental
+            echo "🦶🏻 test scaffolded project, should work"
+            DEBUG=cypress-vue-unit-test npx cypress run --spec 'tests/components/**/*.js'
+            # let's inspect the scaffolded app
+            ls -la
             echo "🦶🏻 install the current cypress-vue-unit-test"
             # Hmm, should it be --only=production?
             npm install ../..
             echo "🦶🏻 run component tests"
-            npx cypress run --spec 'tests/components/**/*.js'
+            DEBUG=cypress-vue-unit-test npx cypress run --spec 'tests/components/**/*.js'
           store_artifacts: true
 
       # this job attaches the workspace left by the install job
