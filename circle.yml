@@ -22,7 +22,15 @@ workflows:
                 command: npm run lint
             - run:
                 name: Build package archive 📦
-                command: npm pack
+                command: |
+                  # first show the contents to be packed
+                  npm pack --dry
+                  echo ""
+                  echo "packing ..."
+                  echo ""
+                  npm pack
+                  echo ""
+                  ls -la
 
       - cypress/run:
           name: Test
