@@ -12,7 +12,19 @@ workflows:
           name: Install
           executor: cypress/base-12
           # creates files in "dist" folder
-          build: npm run build
+          build: |
+            npm run build
+            echo ""
+            echo "Build package archive 📦"
+            echo ""
+            # first show the contents to be packed
+            npm pack --dry
+            echo ""
+            echo "packing ..."
+            echo ""
+            npm pack
+            echo ""
+            ls -la
           post-steps:
             - run:
                 name: Show info 📺
@@ -20,17 +32,6 @@ workflows:
             - run:
                 name: Linting code 🧹
                 command: npm run lint
-            - run:
-                name: Build package archive 📦
-                command: |
-                  # first show the contents to be packed
-                  npm pack --dry
-                  echo ""
-                  echo "packing ..."
-                  echo ""
-                  npm pack
-                  echo ""
-                  ls -la
 
       - cypress/run:
           name: Test
