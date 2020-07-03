@@ -81,6 +81,11 @@ workflows:
             echo "🦶🏻 run component tests"
             echo ""
             DEBUG=cypress-vue-unit-test npx cypress run --spec 'tests/components/**/*.js'
+            echo ""
+            echo "🦶🏻 look at the generated files, should have coverage"
+            # (after updating cypress-experimental)
+            echo ""
+            ls -la
           store_artifacts: true
 
       # this job attaches the workspace left by the install job
