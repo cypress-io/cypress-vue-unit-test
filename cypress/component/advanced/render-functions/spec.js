@@ -124,7 +124,7 @@ describe('Component with arguments', () => {
             style: 'color:' + a[1] + ';font-size:' + a[2] + ';',
           },
         },
-        this.$slots.default,
+        this.$slots.default || '<EMPTY>',
       )
     },
     props: {
@@ -170,6 +170,20 @@ describe('Component with arguments', () => {
       'have.attr',
       'style',
       'color:green;font-size:30;',
+    )
+  })
+
+  it('mounts just the component and passes props', () => {
+    mount(appComponent, {
+      propsData: {
+        elementtype: 'h3,red,30,h3tag',
+      },
+    })
+    // the component appears and the styling is applied
+    cy.contains('<EMPTY>').should(
+      'have.attr',
+      'style',
+      'color:red;font-size:30;',
     )
   })
 })
