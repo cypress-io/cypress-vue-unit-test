@@ -3,15 +3,20 @@ import { mount } from 'cypress-vue-unit-test'
 import ParentComponent from './Parent.vue'
 import ChildComponent from './Child.vue'
 
-describe('Mocking components (under development)', () => {
+describe('Mocking components', () => {
+  beforeEach(() => {
+    // by deleting _Ctor we force Vue system to recompile the
+    // component and render the new component tree
+    delete ParentComponent._Ctor
+  })
+
   it('renders real child component', () => {
     mount(ParentComponent)
     cy.get('.a-parent')
     cy.get('.a-child')
   })
 
-  // the test works by itself, but not when running together with the test above
-  it.skip('mocks Child component imported by the Parent component', () => {
+  it('mocks Child component imported by the Parent component', () => {
     // replace real component with mock component
     ParentComponent.components = {
       ChildComponent: {
@@ -26,7 +31,7 @@ describe('Mocking components (under development)', () => {
   })
 
   // and how to reset the mocked child component?
-  it.skip('renders real child component again', () => {
+  it('renders real child component again', () => {
     ParentComponent.components = {
       ChildComponent,
     }
