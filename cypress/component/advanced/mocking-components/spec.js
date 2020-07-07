@@ -1,7 +1,6 @@
 /// <reference types="cypress" />
 import { mount } from 'cypress-vue-unit-test'
 import ParentComponent from './Parent.vue'
-import ChildComponent from './Child.vue'
 
 describe('Mocking components', () => {
   beforeEach(() => {
@@ -17,12 +16,27 @@ describe('Mocking components', () => {
   })
 
   it('mocks Child component imported by the Parent component', () => {
-    // replace real component with mock component
-    ParentComponent.components = {
+    // alternative 1:
+    //
+    // replace the real component with a mock component
+    // could be done "manually", but would require restoring the real
+    // ".components" object after this test
+    //
+    // ParentComponent.components = {
+    //   ChildComponent: {
+    //     template: '<div class="test-child">Test component</div>',
+    //   },
+    // }
+
+    // alternative 2:
+    //
+    // use built-in cy.stub method https://on.cypress.io/stub
+    // that are reset automatically before every test
+    cy.stub(ParentComponent, 'components', {
       ChildComponent: {
         template: '<div class="test-child">Test component</div>',
       },
-    }
+    })
 
     mount(ParentComponent)
     cy.get('.a-parent')
@@ -32,9 +46,6 @@ describe('Mocking components', () => {
 
   // and how to reset the mocked child component?
   it('renders real child component again', () => {
-    ParentComponent.components = {
-      ChildComponent,
-    }
     mount(ParentComponent)
     cy.get('.a-parent')
     cy.get('.a-child')
