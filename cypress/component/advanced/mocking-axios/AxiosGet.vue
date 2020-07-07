@@ -14,6 +14,8 @@
 import {get} from 'axios';
 import * as Axios from 'axios';
 
+window.AxiosLib = Axios
+
 export default {
   data() {
     return {

@@ -20,6 +20,8 @@ describe('Mocking get import from Axios', () => {
       .as('get')
 
     console.log('Axios is', Axios)
+    console.log('window.AxiosLib is', window.AxiosLib)
+    console.log('window.AxiosLib === Axios?', window.AxiosLib === Axios)
     mount(AxiosGet)
   })
 })
