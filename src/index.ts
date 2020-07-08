@@ -102,6 +102,31 @@ const resetStoreVM = (Vue, { store }) => {
 }
 
 /**
+ * Options to pass to the component when creating it, like
+ * props.
+ *
+ * @interface ComponentOptions
+ */
+interface ComponentOptions {}
+
+/**
+ * Options controlling how the component is going to be mounted,
+ * including global Vue plugins and extensions.
+ *
+ * @interface MountOptions
+ */
+interface MountOptions {
+  /**
+   * Vue instance to use.
+   *
+   * @deprecated
+   * @type {unknown}
+   * @memberof MountOptions
+   */
+  vue: unknown
+}
+
+/**
  * Mounts a Vue component inside Cypress browser.
  * @param {object} component imported from Vue file
  * @example
@@ -114,14 +139,22 @@ const resetStoreVM = (Vue, { store }) => {
  *    cy.get('#greeting').should('be.visible')
  *  })
  */
-export const mount = (component: object, optionsOrProps = {}) => {
+export const mount = (
+  component: object,
+  optionsOrProps: Partial<ComponentOptions & MountOptions> = {},
+) => {
   checkMountModeEnabled()
 
-  const options = Cypress._.pick(optionsOrProps, defaultOptions)
-  const props = Cypress._.omit(optionsOrProps, defaultOptions)
+  const options: Partial<MountOptions> = Cypress._.pick(
+    optionsOrProps,
+    defaultOptions,
+  )
+  const props: Partial<ComponentOptions> = Cypress._.omit(
+    optionsOrProps,
+    defaultOptions,
+  )
 
   // display deprecation warnings
-  // @ts-ignore
   if (options.vue) {
     console.warn(stripIndent`
       [DEPRECATION]: 'vue' option has been deprecated.
