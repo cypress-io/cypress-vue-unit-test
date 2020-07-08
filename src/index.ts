@@ -139,7 +139,6 @@ interface MountOptions {
   /**
    * CSS style string to inject when mounting the component
    *
-   * @type {string}
    * @memberof MountOptions
    * @example
    *  const style = `
@@ -150,6 +149,23 @@ interface MountOptions {
    *  mount(Todo, { style })
    */
   style: string
+
+  /**
+   * Stylesheet(s) urls to inject as `<link ... />` elements when
+   * mounting the component
+   *
+   * @memberof MountOptions
+   * @example
+   *  const template = '...'
+   *  const stylesheets = '/node_modules/tailwindcss/dist/tailwind.min.css'
+   *  mount({ template }, { stylesheets })
+   *
+   * @example
+   *  const template = '...'
+   *  const stylesheets = ['https://cdn.../lib.css', 'https://lib2.css']
+   *  mount({ template }, { stylesheets })
+   */
+  stylesheets: string | string[]
 }
 
 /**
@@ -235,15 +251,10 @@ export const mount = (
         el = div
       }
 
-      // @ts-ignore
       if (typeof options.stylesheets === 'string') {
-        // @ts-ignore
         options.stylesheets = [options.stylesheets]
       }
-      // @ts-ignore
       if (Array.isArray(options.stylesheets)) {
-        // console.log('adding stylesheets')
-        // @ts-ignore
         options.stylesheets.forEach((href) => {
           const link = document.createElement('link')
           link.type = 'text/css'
