@@ -4,7 +4,12 @@ import Vue from 'vue'
 const { stripIndent } = require('common-tags')
 
 // mountVue options
-const defaultOptions = ['vue', 'extensions', 'style', 'stylesheets']
+const defaultOptions: (keyof MountOptions)[] = [
+  'vue',
+  'extensions',
+  'style',
+  'stylesheets',
+]
 
 function checkMountModeEnabled() {
   // @ts-ignore
@@ -34,7 +39,10 @@ const registerGlobalComponents = (Vue, options) => {
 }
 
 const installFilters = (Vue, options) => {
-  const filters = Cypress._.get(options, 'extensions.filters')
+  const filters: VueFilters | undefined = Cypress._.get(
+    options,
+    'extensions.filters',
+  )
   if (Cypress._.isPlainObject(filters)) {
     Object.keys(filters).forEach((name) => {
       Vue.filter(name, filters[name])
@@ -120,6 +128,16 @@ type VueComponent = Vue.ComponentOptions<any>
  */
 interface ComponentOptions {}
 
+// local placeholder types
+type VueLocalComponents = object
+
+type VueFilters = {
+  [key: string]: Function
+}
+
+type VueMixin = unknown
+type VueMixins = VueMixin | VueMixin[]
+
 /**
  * Additional Vue services to register while mounting the component, like
  * local components, plugins, etc.
@@ -144,7 +162,38 @@ interface MountOptionsExtensions {
    *  },
    *  mount(Hello, { extensions: { components }})
    */
-  components?: object
+  components?: VueLocalComponents
+
+  /**
+   * Optional Vue filters to install while mounting the component
+   *
+   * @memberof MountOptionsExtensions
+   * @see https://github.com/bahmutov/cypress-vue-unit-test#examples
+   * @example
+   *  const filters = {
+   *    reverse: (s) => s.split('').reverse().join(''),
+   *  }
+   *  mount(Hello, { extensions: { filters }})
+   */
+  filters?: VueFilters
+
+  /**
+   * Optional Vue mixin(s) to install when mounting the component
+   *
+   * @memberof MountOptionsExtensions
+   * @alias mixins
+   * @see https://github.com/bahmutov/cypress-vue-unit-test#examples
+   */
+  mixin?: VueMixins
+
+  /**
+   * Optional Vue mixin(s) to install when mounting the component
+   *
+   * @memberof MountOptionsExtensions
+   * @alias mixin
+   * @see https://github.com/bahmutov/cypress-vue-unit-test#examples
+   */
+  mixins?: VueMixins
 }
 
 /**
