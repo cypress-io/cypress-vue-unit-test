@@ -102,6 +102,17 @@ const resetStoreVM = (Vue, { store }) => {
 }
 
 /**
+ * Type for component passed to "mount"
+ *
+ * @interface VueComponent
+ * @example
+ *  import Hello from './Hello.vue'
+ *         ^^^^^ this type
+ *  mount(Hello)
+ */
+type VueComponent = Vue.ComponentOptions<any>
+
+/**
  * Options to pass to the component when creating it, like
  * props.
  *
@@ -124,7 +135,27 @@ interface MountOptions {
    * @memberof MountOptions
    */
   vue: unknown
+
+  /**
+   * CSS style string to inject when mounting the component
+   *
+   * @type {string}
+   * @memberof MountOptions
+   * @example
+   *  const style = `
+   *    .todo.done {
+   *      text-decoration: line-through;
+   *      color: gray;
+   *    }`
+   *  mount(Todo, { style })
+   */
+  style: string
 }
+
+/**
+ * Utility type for union of options passed to "mount(..., options)"
+ */
+type MountOptionsArgument = Partial<ComponentOptions & MountOptions>
 
 /**
  * Mounts a Vue component inside Cypress browser.
@@ -140,8 +171,8 @@ interface MountOptions {
  *  })
  */
 export const mount = (
-  component: object,
-  optionsOrProps: Partial<ComponentOptions & MountOptions> = {},
+  component: VueComponent,
+  optionsOrProps: MountOptionsArgument = {},
 ) => {
   checkMountModeEnabled()
 
@@ -178,7 +209,6 @@ export const mount = (
   // https://github.com/bahmutov/cypress-vue-unit-test/issues/313
   if (
     Cypress._.isPlainObject(component) &&
-    // @ts-ignore
     Cypress._.isFunction(component.render)
   ) {
     // @ts-ignore
@@ -194,7 +224,7 @@ export const mount = (
       win.Vue = Vue
 
       // @ts-ignore
-      const document = cy.state('document')
+      const document: Document = cy.state('document')
       let el = document.getElementById('cypress-jsdom')
 
       // If the target div doesn't exist, create it
@@ -223,10 +253,8 @@ export const mount = (
         })
       }
 
-      // @ts-ignore
       if (options.style) {
         const style = document.createElement('style')
-        // @ts-ignore
         style.appendChild(document.createTextNode(options.style))
         el.append(style)
       }
@@ -260,5 +288,7 @@ export const mount = (
  *  import {mountCallback} from 'cypress-vue-unit-test'
  *  beforeEach(mountVue(component, options))
  */
-export const mountCallback = (component: object, options?: object) => () =>
-  mount(component, options)
+export const mountCallback = (
+  component: VueComponent,
+  options?: MountOptionsArgument,
+) => () => mount(component, options)
