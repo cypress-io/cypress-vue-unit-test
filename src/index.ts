@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-const Vue = require('vue').default
+import Vue from 'vue'
 const { stripIndent } = require('common-tags')
 
 // mountVue options
@@ -71,9 +71,10 @@ const installMixins = (Vue, options) => {
 
 const isConstructor = (object) => object && object._compiled
 
-const hasStore = ({ store }) => store && store._vm
+// @ts-ignore
+const hasStore = ({ store }: { store: object }) => store && store._vm
 
-const forEachValue = (obj, fn) =>
+const forEachValue = (obj: object, fn: Function) =>
   Object.keys(obj).forEach((key) => fn(obj[key], key))
 
 const resetStoreVM = (Vue, { store }) => {
@@ -100,13 +101,27 @@ const resetStoreVM = (Vue, { store }) => {
   return store
 }
 
-const mountVue = (component, optionsOrProps = {}) => {
+/**
+ * Mounts a Vue component inside Cypress browser.
+ * @param {object} component imported from Vue file
+ * @example
+ *  import Greeting from './Greeting.vue'
+ *  import { mount } from 'cypress-vue-unit-test'
+ *  it('works', () => {
+ *    // pass props, additional extensions, etc
+ *    mount(Greeting, { ... })
+ *    // use any Cypress command to test the component
+ *    cy.get('#greeting').should('be.visible')
+ *  })
+ */
+export const mount = (component: object, optionsOrProps = {}) => {
   checkMountModeEnabled()
 
   const options = Cypress._.pick(optionsOrProps, defaultOptions)
   const props = Cypress._.omit(optionsOrProps, defaultOptions)
 
   // display deprecation warnings
+  // @ts-ignore
   if (options.vue) {
     console.warn(stripIndent`
       [DEPRECATION]: 'vue' option has been deprecated.
@@ -120,7 +135,9 @@ const mountVue = (component, optionsOrProps = {}) => {
   // appIframe.contentWindow.Vue = Vue
 
   // refresh inner Vue instance of Vuex store
+  // @ts-ignore
   if (hasStore(component)) {
+    // @ts-ignore
     component.store = resetStoreVM(Vue, component)
   }
 
@@ -128,68 +145,87 @@ const mountVue = (component, optionsOrProps = {}) => {
   // https://github.com/bahmutov/cypress-vue-unit-test/issues/313
   if (
     Cypress._.isPlainObject(component) &&
+    // @ts-ignore
     Cypress._.isFunction(component.render)
   ) {
+    // @ts-ignore
     component._compiled = true
   }
 
-  return cy.window({ log: false }).then((win) => {
-    win.Vue = Vue
+  return cy
+    .window({
+      log: false,
+    })
+    .then((win) => {
+      // @ts-ignore
+      win.Vue = Vue
 
-    const document = cy.state('document')
-    let el = document.getElementById('cypress-jsdom')
+      // @ts-ignore
+      const document = cy.state('document')
+      let el = document.getElementById('cypress-jsdom')
 
-    // If the target div doesn't exist, create it
-    if (!el) {
-      const div = document.createElement('div')
-      div.id = 'cypress-jsdom'
-      document.body.appendChild(div)
-      el = div
-    }
+      // If the target div doesn't exist, create it
+      if (!el) {
+        const div = document.createElement('div')
+        div.id = 'cypress-jsdom'
+        document.body.appendChild(div)
+        el = div
+      }
 
-    if (typeof options.stylesheets === 'string') {
-      options.stylesheets = [options.stylesheets]
-    }
-    if (Array.isArray(options.stylesheets)) {
-      console.log('adding stylesheets')
-      options.stylesheets.forEach((href) => {
-        const link = document.createElement('link')
-        link.type = 'text/css'
-        link.rel = 'stylesheet'
-        link.href = href
-        el.append(link)
-      })
-    }
+      // @ts-ignore
+      if (typeof options.stylesheets === 'string') {
+        // @ts-ignore
+        options.stylesheets = [options.stylesheets]
+      }
+      // @ts-ignore
+      if (Array.isArray(options.stylesheets)) {
+        // console.log('adding stylesheets')
+        // @ts-ignore
+        options.stylesheets.forEach((href) => {
+          const link = document.createElement('link')
+          link.type = 'text/css'
+          link.rel = 'stylesheet'
+          link.href = href
+          el.append(link)
+        })
+      }
 
-    if (options.style) {
-      const style = document.createElement('style')
-      style.appendChild(document.createTextNode(options.style))
-      el.append(style)
-    }
+      // @ts-ignore
+      if (options.style) {
+        const style = document.createElement('style')
+        // @ts-ignore
+        style.appendChild(document.createTextNode(options.style))
+        el.append(style)
+      }
 
-    const componentNode = document.createElement('div')
-    el.append(componentNode)
+      const componentNode = document.createElement('div')
+      el.append(componentNode)
 
-    // setup Vue instance
-    installFilters(Vue, options)
-    installMixins(Vue, options)
-    installPlugins(Vue, options)
-    registerGlobalComponents(Vue, options)
-    deleteCachedConstructors(component)
+      // setup Vue instance
+      installFilters(Vue, options)
+      installMixins(Vue, options)
+      installPlugins(Vue, options)
+      registerGlobalComponents(Vue, options)
+      deleteCachedConstructors(component)
 
-    // create root Vue component
-    // and make it accessible via Cypress.vue
-    if (isConstructor(component)) {
-      const Cmp = Vue.extend(component)
-      Cypress.vue = new Cmp(props).$mount(componentNode)
-    } else {
-      Cypress.vue = new Vue(component).$mount(componentNode)
-    }
-  })
+      // create root Vue component
+      // and make it accessible via Cypress.vue
+      if (isConstructor(component)) {
+        const Cmp = Vue.extend(component)
+        // @ts-ignore
+        Cypress.vue = new Cmp(props).$mount(componentNode)
+      } else {
+        // @ts-ignore
+        Cypress.vue = new Vue(component).$mount(componentNode)
+      }
+    })
 }
 
-// the double function allows mounting a component quickly
-// beforeEach(mountVue(component, options))
-const mountCallback = (...args) => () => mountVue(...args)
-
-module.exports = { mount: mountVue, mountCallback }
+/**
+ * Helper function for mounting a component quickly in test hooks.
+ * @example
+ *  import {mountCallback} from 'cypress-vue-unit-test'
+ *  beforeEach(mountVue(component, options))
+ */
+export const mountCallback = (component: object, options?: object) => () =>
+  mount(component, options)
