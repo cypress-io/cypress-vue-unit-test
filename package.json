@@ -27,7 +27,6 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "//build": "babel src --ignore src/*spec.js --out-dir dist && babel preprocessor --out-dir dist/preprocessor && babel plugins --out-dir dist/plugins",
     "ban": "ban",
     "deps": "echo skip deps-ok && dependency-check --no-dev .",
     "issues": "git-issues",
@@ -54,7 +53,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "7.8.4",
     "@babel/core": "7.9.0",
     "@babel/preset-env": "7.9.5",
     "axios": "0.19.2",
