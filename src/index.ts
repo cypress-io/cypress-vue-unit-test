@@ -121,6 +121,33 @@ type VueComponent = Vue.ComponentOptions<any>
 interface ComponentOptions {}
 
 /**
+ * Additional Vue services to register while mounting the component, like
+ * local components, plugins, etc.
+ *
+ * @interface MountOptionsExtensions
+ * @see https://github.com/bahmutov/cypress-vue-unit-test#examples
+ */
+interface MountOptionsExtensions {
+  /**
+   * Extra local components
+   *
+   * @memberof MountOptionsExtensions
+   * @see https://github.com/bahmutov/cypress-vue-unit-test#examples
+   * @example
+   *  import Hello from './Hello.vue'
+   *  // imagine Hello needs AppComponent
+   *  // that it uses in its template like <app-component ... />
+   *  // during testing we can replace it with a mock component
+   *  const appComponent = ...
+   *  const components = {
+   *    'app-component': appComponent
+   *  },
+   *  mount(Hello, { extensions: { components }})
+   */
+  components?: object
+}
+
+/**
  * Options controlling how the component is going to be mounted,
  * including global Vue plugins and extensions.
  *
@@ -131,7 +158,6 @@ interface MountOptions {
    * Vue instance to use.
    *
    * @deprecated
-   * @type {unknown}
    * @memberof MountOptions
    */
   vue: unknown
@@ -166,6 +192,15 @@ interface MountOptions {
    *  mount({ template }, { stylesheets })
    */
   stylesheets: string | string[]
+
+  /**
+   * Extra Vue plugins, mixins, local components to register while
+   * mounting this component
+   *
+   * @memberof MountOptions
+   * @see https://github.com/bahmutov/cypress-vue-unit-test#examples
+   */
+  extensions: MountOptionsExtensions
 }
 
 /**
