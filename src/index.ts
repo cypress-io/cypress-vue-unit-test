@@ -51,9 +51,10 @@ const installFilters = (Vue, options) => {
 }
 
 const installPlugins = (Vue, options) => {
-  const plugins =
+  const plugins: VuePlugins =
     Cypress._.get(options, 'extensions.use') ||
     Cypress._.get(options, 'extensions.plugins')
+
   if (Cypress._.isArray(plugins)) {
     plugins.forEach((plugin) => {
       if (Array.isArray(plugin)) {
@@ -139,6 +140,16 @@ type VueMixin = unknown
 type VueMixins = VueMixin | VueMixin[]
 
 /**
+ * A Vue plugin to register,
+ * or a plugin + its options pair inside an array
+ */
+type VuePlugin = unknown | [unknown, unknown]
+/**
+ * A single Vue plugin or a list of plugins to register
+ */
+type VuePlugins = VuePlugin | VuePlugin[]
+
+/**
  * Additional Vue services to register while mounting the component, like
  * local components, plugins, etc.
  *
@@ -194,6 +205,24 @@ interface MountOptionsExtensions {
    * @see https://github.com/bahmutov/cypress-vue-unit-test#examples
    */
   mixins?: VueMixins
+
+  /**
+   * A single plugin or multiple plugins.
+   *
+   * @see https://github.com/bahmutov/cypress-vue-unit-test#examples
+   * @alias plugins
+   * @memberof MountOptionsExtensions
+   */
+  use?: VuePlugins
+
+  /**
+   * A single plugin or multiple plugins.
+   *
+   * @see https://github.com/bahmutov/cypress-vue-unit-test#examples
+   * @alias use
+   * @memberof MountOptionsExtensions
+   */
+  plugins?: VuePlugins
 }
 
 /**
