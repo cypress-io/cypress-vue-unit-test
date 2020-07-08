@@ -1,12 +1,10 @@
 /// <reference types="cypress" />
 import { mount } from 'cypress-vue-unit-test'
 import AxiosGet from './AxiosGet.vue'
+// can we mock module loaded using "require"?
+const Axios = require('axios')
 
-// import everything from "axios" module
-// so we can mock its methods from the test
-import * as Axios from 'axios'
-
-describe('Mocking get import from Axios', () => {
+describe('Mocking get require from Axios', () => {
   // https://github.com/bahmutov/cypress-vue-unit-test/issues/346
   it.skip('renders mocked data', () => {
     cy.stub(Axios, 'get')
