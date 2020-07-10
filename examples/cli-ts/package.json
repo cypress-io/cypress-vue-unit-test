@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "cy:open": "../../node_modules/.bin/cypress open"
+    "cy:open": "../../node_modules/.bin/cypress open",
+    "cy:run": "../../node_modules/.bin/cypress run"
   },
   "dependencies": {
     "core-js": "^3.6.5",
