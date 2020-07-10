@@ -119,7 +119,7 @@ const resetStoreVM = (Vue, { store }) => {
  *         ^^^^^ this type
  *  mount(Hello)
  */
-type VueComponent = Vue.ComponentOptions<any>
+type VueComponent = Vue.ComponentOptions<any> | Vue.VueConstructor
 
 /**
  * Options to pass to the component when creating it, like
@@ -374,6 +374,7 @@ export const mount = (
   // https://github.com/bahmutov/cypress-vue-unit-test/issues/313
   if (
     Cypress._.isPlainObject(component) &&
+    // @ts-ignore
     Cypress._.isFunction(component.render)
   ) {
     // @ts-ignore
@@ -434,6 +435,7 @@ export const mount = (
       // create root Vue component
       // and make it accessible via Cypress.vue
       if (isConstructor(component)) {
+        // @ts-ignore
         const Cmp = Vue.extend(component)
         // @ts-ignore
         Cypress.vue = new Cmp(props).$mount(componentNode)
