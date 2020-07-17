@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import MessageList from './MessageList.vue'
+import MessageList from '../MessageList.vue'
 import { mountCallback } from 'cypress-vue-unit-test'
 
 // common utils for MessageList

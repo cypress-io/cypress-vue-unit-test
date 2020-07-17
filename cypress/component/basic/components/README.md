@@ -3,7 +3,7 @@
 During mounting, you can register other components, even fake ones. See [spec.js](spec.js)
 
 ```js
-import MessageList from './MessageList.vue'
+import MessageList from '../MessageList.vue'
 // two different components, each gets "numbers" list
 // into its property "messages"
 const template = `

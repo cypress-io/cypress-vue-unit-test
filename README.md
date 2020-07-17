@@ -93,21 +93,7 @@ when mounting Vue component. Use `{ extensions: { ... }}` object inside
 the `options`.
 
 - `components` - object of 'id' and components to register globally, see [Components](cypress/component/basic/components) example
-
-- `use` (alias `plugins`) - list of plugins
-
-```js
-const use = [MyPlugin]
-// extend Vue with plugins
-const extensions = {
-  use,
-}
-beforeEach(mountCallback({}, { extensions }))
-```
-
-See [Vue plugin docs](https://vuejs.org/v2/guide/plugins.html)
-and [plugin-spec.js](cypress/integration/plugin-spec.js)
-
+- `use` (alias `plugins`) - list of plugins, see [Plugins](cypress/component/basic/plugins)
 - `mixin` (alias `mixins`) - list of global mixins, see [Mixins](cypress/component/basic/mixins) example
 - `filters` - hash of global filters, see [Filters](cypress/component/basic/filters) example
 
@@ -529,6 +515,7 @@ Spec | Description
 [Hello](cypress/component/basic/hello) | Testing examples from Vue2 cookbook
 [Mixins](cypress/component/basic/mixins) | Registering Vue mixins
 [Plugins](cypress/component/basic/plugins) | Loading additional plugins
+[Props](cypress/component/basic/props) | Pass props to the component during mount
 <!-- prettier-ignore-end -->
 
 ### Advanced examples
