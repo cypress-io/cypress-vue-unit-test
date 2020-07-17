@@ -134,30 +134,7 @@ beforeEach(mountCallback({}, { extensions }))
 See [Vue plugin docs](https://vuejs.org/v2/guide/plugins.html)
 and [plugin-spec.js](cypress/integration/plugin-spec.js)
 
-- `mixin` (alias `mixins`) - list of global mixins
-
-```js
-const MyMixin = {
-  // we have to use original Sinon to create a spy
-  // because we are outside a test function
-  // and cannot use "cy.spy"
-  created: Cypress.sinon.spy(),
-}
-const mixin = [MyMixin]
-// extend Vue with mixins
-const extensions = {
-  mixin,
-}
-beforeEach(mountCallback({}, { extensions }))
-
-it('calls mixin "created" method', () => {
-  expect(MyMixin.created).to.have.been.calledOnce
-})
-```
-
-See [Vue global mixin docs](https://vuejs.org/v2/guide/mixins.html#Global-Mixin)
-and [mixin-spec.js](cypress/integration/mixin-spec.js)
-
+- `mixin` (alias `mixins`) - list of global mixins, see [Mixins](cypress/component/basic/mixins) example
 - `filters` - hash of global filters, see [Filters](cypress/component/basic/filters) example
 
 <a name="intro-example"/>
@@ -575,6 +552,7 @@ Spec | Description
 --- | ---
 [Filters](cypress/component/basic/filters) | Registering global filters
 [Hello](cypress/component/basic/hello) | Testing examples from Vue2 cookbook
+[Mixins](cypress/component/basic/mixins) | Registering Vue mixins
 [Plugins](cypress/component/basic/plugins) | Loading additional plugins
 <!-- prettier-ignore-end -->
 
