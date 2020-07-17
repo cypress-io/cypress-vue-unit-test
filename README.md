@@ -552,7 +552,12 @@ Repo | Description
 
 ## Known problems
 
-See issues labeled [v2](https://github.com/bahmutov/cypress-vue-unit-test/labels/v2)
+<details id="slots">
+  <summary>Slots not supported</summary>
+
+See issue [#364](https://github.com/bahmutov/cypress-vue-unit-test/issues/364)
+
+</details>
 
 <a name="bundling"/>
 
