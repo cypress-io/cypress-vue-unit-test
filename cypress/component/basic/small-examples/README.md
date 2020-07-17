@@ -1,4 +1,4 @@
-# counter
+# Small examples
 
 These examples come from the blog post [Testing Vue components with Vue Testing Library](https://blog.logrocket.com/testing-vue-components-with-vue-testing-library/) and the tests are written using `cypress-vue-unit-test`.
 
