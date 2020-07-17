@@ -13,3 +13,5 @@ Tests for [Repeater.vue](Repeater.vue) are in [Repeater.spec.js](Repeater.spec.j
 Tests for [Form.vue](Form.vue) are in [Form.spec.js](Form.spec.js)
 
 ![Form spec](images/form.gif)
+
+Tests for [AppInput.vue](AppInput.vue) in [AppInput.spec.js](AppInput.spec.js) show how to pass a `slot` template to a component while mounting it.
