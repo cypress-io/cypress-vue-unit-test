@@ -158,21 +158,7 @@ it('calls mixin "created" method', () => {
 See [Vue global mixin docs](https://vuejs.org/v2/guide/mixins.html#Global-Mixin)
 and [mixin-spec.js](cypress/integration/mixin-spec.js)
 
-- `filters` - hash of global filters
-
-```js
-const filters = {
-  reverse: (s) => s.split().reverse().join(),
-}
-// extend Vue with global filters
-const extensions = {
-  filters,
-}
-beforeEach(mountCallback({}, { extensions }))
-```
-
-See [Vue global filters docs](https://vuejs.org/v2/api/#Vue-filter)
-and [filters-spec.js](cypress/integration/filters-spec.js)
+- `filters` - hash of global filters, see [Filters](cypress/component/basic/filters) example
 
 <a name="intro-example"/>
 
@@ -587,6 +573,7 @@ describe('HelloWorld component', () => {
 <!-- prettier-ignore-start -->
 Spec | Description
 --- | ---
+[Filters](cypress/component/basic/filters) | Registering global filters
 [Hello](cypress/component/basic/hello) | Testing examples from Vue2 cookbook
 [Plugins](cypress/component/basic/plugins) | Loading additional plugins
 <!-- prettier-ignore-end -->
