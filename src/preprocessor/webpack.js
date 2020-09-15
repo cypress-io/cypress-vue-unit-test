@@ -5,8 +5,7 @@ import util from 'util'
 // https://github.com/cypress-io/cypress-webpack-preprocessor
 const webpackPreprocessor = require('@cypress/webpack-preprocessor')
 const debug = require('debug')('cypress-vue-unit-test')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
-// const { VueLoaderPlugin } = require('vue-loader')
+const { VueLoaderPlugin } = require('vue-loader')
 const fw = require('find-webpack')
 
 // Preventing chunks because we don't serve static assets
@@ -112,7 +111,10 @@ function insertBabelLoader(config, options) {
     babelRule.options.plugins.push(instrumentPlugin)
   }
 
-  options.module.rules.push(babelRule)
+  if (options.module && options.module.rules) {
+    options.module.rules.push(babelRule)
+  }
+
   options.plugins = options.plugins || []
 
   const pluginFound = options.plugins.find((plugin) => {

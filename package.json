@@ -77,7 +77,8 @@
     "vue-style-loader": "4.1.2",
     "vue-template-compiler": "2.6.11",
     "vuex": "3.1.1",
-    "webpack": "4.42.0"
+    "webpack": "4.42.0",
+    "@intlify/vue-i18n-loader": "1.0.0"
   },
   "peerDependencies": {
     "vue": "2.x",
@@ -88,7 +89,6 @@
     "@babel/plugin-transform-modules-commonjs": "7.10.4",
     "@cypress/code-coverage": "3.8.1",
     "@cypress/webpack-preprocessor": "5.4.5",
-    "@intlify/vue-i18n-loader": "1.0.0",
     "@vue/test-utils": "1.0.3",
     "babel-plugin-istanbul": "6.0.0",
     "common-tags": "1.8.0",
